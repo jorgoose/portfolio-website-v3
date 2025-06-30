@@ -43,6 +43,7 @@ const menuItems = [
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  align-items: center;
 }
 .menu li a {
   font-size: 2rem;
@@ -51,7 +52,8 @@ const menuItems = [
   letter-spacing: 0.2rem;
   text-shadow: 0 0 10px #5ec3ff, 0 0 2px #fff;
   transition: color 0.2s, text-shadow 0.2s;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: 'Xolonium', Arial, sans-serif;
+  text-align: center;
 }
 .menu li a:hover {
   color: #fff;
