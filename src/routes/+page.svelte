@@ -583,8 +583,8 @@ html, body {
 }
 
 .radio-widget.expanded {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   justify-content: center;
   padding: 0;
@@ -695,8 +695,8 @@ html, body {
   }
   
   .radio-widget.expanded {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
   
   .radio-icon {
