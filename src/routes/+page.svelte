@@ -2,6 +2,7 @@
 import { onMount } from 'svelte';
 
 let crtMode = false;
+let videoAutoplayFailed = false;
 
 const menuItems = [
   { label: 'ABOUT', link: '#about' },
@@ -15,6 +16,34 @@ function toggleCrtMode() {
   crtMode = !crtMode;
   if (typeof window !== 'undefined') {
     localStorage.setItem('crtMode', crtMode.toString());
+  }
+}
+
+function handleVideoLoad(event: Event) {
+  const video = event.target as HTMLVideoElement;
+  if (video) {
+    // Check if video is actually playing
+    const checkPlayback = () => {
+      if (video.paused || video.ended) {
+        videoAutoplayFailed = true;
+      } else {
+        videoAutoplayFailed = false;
+      }
+    };
+    
+    // Check after a short delay to allow autoplay to start
+    setTimeout(checkPlayback, 1000);
+    
+    // Also listen for play/pause events
+    video.addEventListener('play', () => {
+      videoAutoplayFailed = false;
+    });
+    
+    video.addEventListener('pause', () => {
+      if (video.currentTime === 0) {
+        videoAutoplayFailed = true;
+      }
+    });
   }
 }
 
@@ -45,10 +74,27 @@ onMount(() => {
   </button>
 </div>
 
+{#if videoAutoplayFailed}
+  <div class="autoplay-notification">
+    <div class="notification-content">
+      <h3>🎬 Video Autoplay Disabled</h3>
+      <p>To experience the full site, please:</p>
+      <ul>
+        <li>Turn off Low Power Mode (iOS)</li>
+        <li>Allow autoplay in your browser settings</li>
+        <li>Or tap the video to play manually</li>
+      </ul>
+      <button class="notification-close" on:click={() => videoAutoplayFailed = false}>
+        Got it
+      </button>
+    </div>
+  </div>
+{/if}
+
 {#if crtMode}
   <div class="tv-frame">
     <div class="crt-overlay"></div>
-    <video autoplay loop muted playsinline class="background-video">
+    <video autoplay loop muted playsinline class="background-video" on:loadeddata={handleVideoLoad}>
       <source src="/menu_background.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
@@ -91,7 +137,7 @@ onMount(() => {
   </div>
 {:else}
   <div class="halo-bg">
-    <video autoplay loop muted playsinline class="background-video">
+    <video autoplay loop muted playsinline class="background-video" on:loadeddata={handleVideoLoad}>
       <source src="/menu_background.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
@@ -170,6 +216,64 @@ html, body {
   background: #5ec3ff;
   color: #181818;
   border: 2px solid #fff;
+}
+
+.autoplay-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #5ec3ff;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90vw;
+  box-shadow: 0 0 32px #5ec3ff88;
+  backdrop-filter: blur(10px);
+}
+
+.notification-content h3 {
+  color: #5ec3ff;
+  font-family: 'Xolonium', Arial, sans-serif;
+  font-size: 1.5rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.notification-content p {
+  color: #fff;
+  font-family: 'Xolonium', Arial, sans-serif;
+  margin: 0 0 1rem 0;
+}
+
+.notification-content ul {
+  color: #fff;
+  font-family: 'Xolonium', Arial, sans-serif;
+  margin: 0 0 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.notification-content li {
+  margin: 0.5rem 0;
+}
+
+.notification-close {
+  background: #5ec3ff;
+  color: #181818;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Xolonium', Arial, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.notification-close:hover {
+  background: #fff;
 }
 /* CRT TV styles (reuse from projects page) */
 .tv-frame {
