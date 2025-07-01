@@ -698,6 +698,22 @@ html, body {
     width: 28px;
     height: 28px;
   }
+  
+  /* Adjust pulse animation for mobile */
+  .radio-pulse {
+    border-width: 1px;
+  }
+  
+  @keyframes radio-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.3);
+      opacity: 0;
+    }
+  }
 }
 /* CRT TV styles (reuse from projects page) */
 .tv-frame {
