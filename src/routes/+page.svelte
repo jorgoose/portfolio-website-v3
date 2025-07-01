@@ -375,8 +375,8 @@ onMount(() => {
 
 /* CRT mode text scaling - only applies when inside TV frame */
 .tv-frame .halo-title {
-  font-size: clamp(2rem, 8vw, 4rem);
-  letter-spacing: clamp(0.2rem, 1vw, 0.8rem);
+  font-size: clamp(4rem, 15vw, 8rem);
+  letter-spacing: clamp(0.4rem, 2vw, 1.5rem);
 }
 .menu {
   list-style: none;
@@ -439,8 +439,8 @@ onMount(() => {
   
   /* CRT mode mobile scaling */
   .tv-frame .halo-title {
-    font-size: clamp(1.5rem, 6vw, 3rem);
-    letter-spacing: clamp(0.1rem, 0.5vw, 0.4rem);
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    letter-spacing: clamp(0.25rem, 1vw, 0.8rem);
   }
   
   .tv-frame .menu li a {
