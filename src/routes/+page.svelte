@@ -103,12 +103,11 @@ const menuItems = [
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   align-items: center;
   z-index: 2;
 }
 .menu li a {
-  font-size: 2rem;
+  font-size: 3.2rem;
   color: #5ec3ff;
   text-decoration: none;
   letter-spacing: 0.2rem;
@@ -141,5 +140,14 @@ const menuItems = [
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .halo-title {
+    font-size: 12vw;
+  }
+  .menu li a {
+    font-size: 1.1rem;
+  }
 }
 </style>
