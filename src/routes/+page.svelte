@@ -622,13 +622,14 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  width: 70px;
+  height: 60px;
   border: 2px solid #5ec3ff;
   border-radius: 50%;
   animation: radio-pulse 2s infinite;
   opacity: 0;
   box-sizing: border-box;
+  pointer-events: none;
 }
 
 .radio-pulse.hidden {
@@ -711,8 +712,8 @@ html, body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     box-sizing: border-box;
   }

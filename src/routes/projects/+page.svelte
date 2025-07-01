@@ -606,6 +606,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: clamp(0.2rem, 0.5vw, 0.5rem) clamp(0.2rem, 0.5vw, 0.5rem);
+  padding-left: 2rem;
 }
 .level-card {
   background: rgba(10, 20, 40, 0.95);
