@@ -11,12 +11,12 @@
   let start = 0;
   const visibleCount = 3;
   function prev() {
-    start = (start - 1 + projects.length) % projects.length;
+    if (start > 0) start -= 1;
   }
   function next() {
-    start = (start + 1) % projects.length;
+    if (start + visibleCount < projects.length) start += 1;
   }
-  $: visibleProjects = [0, 1, 2].map(i => projects[(start + i) % projects.length]);
+  $: visibleProjects = projects.slice(start, start + visibleCount);
 </script>
 
 <div class="projects-bg">
@@ -26,9 +26,10 @@
   </video>
   <div class="projects-header">Projects</div>
   <div class="menu-bar">
-    <button class="arrow left" on:click={prev} aria-label="Previous Projects">
-      <svg viewBox="0 0 60 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="60,0 30,60 60,120" fill="#5ec3ff" stroke="#1976d2" stroke-width="4" />
+    <button class="arrow left" on:click={prev} aria-label="Previous Projects" disabled={start === 0}>
+      <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,0 13,60 32,120" fill="#5ec3ff"/>
+        <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
       </svg>
     </button>
     <div class="level-select-row">
@@ -42,9 +43,10 @@
         </div>
       {/each}
     </div>
-    <button class="arrow right" on:click={next} aria-label="Next Projects">
-      <svg viewBox="0 0 60 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="0,0 30,60 0,120" fill="#5ec3ff" stroke="#1976d2" stroke-width="4" />
+    <button class="arrow right" on:click={next} aria-label="Next Projects" disabled={start + visibleCount >= projects.length}>
+      <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="0,0 19,60 0,120" fill="#5ec3ff"/>
+        <polygon points="2,6 15,60 2,114" fill="#1976d2"/>
       </svg>
     </button>
   </div>
@@ -72,14 +74,15 @@
 }
 .projects-header {
   position: absolute;
-  top: 18vh;
-  left: 8vw;
+  left: 17vw;
+  top: 7vh;
   font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 2.2rem;
+  font-size: 3.8rem;
   color: #5ec3ff;
   letter-spacing: 0.15em;
   z-index: 2;
   text-shadow: 0 0 8px #5ec3ff88, 0 0 2px #fff8;
+  text-transform: uppercase;
 }
 .menu-bar {
   position: absolute;
@@ -175,7 +178,11 @@
   cursor: pointer;
   z-index: 2;
   transition: filter 0.2s;
-  height: 60%;
+  height: 100%;
+}
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 .arrow-svg {
   display: block;
@@ -185,7 +192,7 @@
   filter: drop-shadow(0 0 8px #5ec3ff88);
   transition: filter 0.2s;
 }
-.arrow:hover .arrow-svg {
+.arrow:hover:not(:disabled) .arrow-svg {
   filter: drop-shadow(0 0 16px #5ec3ffcc);
 }
 @media (max-width: 1000px) {
