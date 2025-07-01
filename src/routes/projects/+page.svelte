@@ -292,12 +292,18 @@ body {
   }
   .crt-overlay {
     border-radius: 0.3rem;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
   }
   .background-video {
     border-radius: 0.3rem;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    left: 0;
+    top: 0;
   }
   .tv-stand {
     width: 60px;
@@ -322,46 +328,107 @@ body {
   .projects-header {
     font-size: 1.1rem;
     margin-top: 0.5rem;
-    margin-bottom: 0.3rem;
-    padding-left: 2%;
-    padding-right: 2%;
+    margin-bottom: 0.15rem;
+    padding-left: 4vw;
+    padding-right: 4vw;
     width: 100%;
     box-sizing: border-box;
   }
+  .menu-bar,
+  .level-select-row,
+  .level-card,
+  .level-img-wrapper,
+  .level-title,
+  .level-desc {
+    box-sizing: border-box;
+    min-height: 0;
+    max-width: 100%;
+  }
+
   .menu-bar {
     flex-direction: column;
     width: 100%;
-    height: auto;
-    min-height: 0;
-    padding: 0.5rem 0 0.5rem 0;
-    box-sizing: border-box;
+    height: 55vw;
+    max-height: 60vw;
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: hidden;
+    justify-content: center;
   }
+
   .level-select-row {
+    display: flex;
     flex-direction: row;
-    gap: 0.7rem;
+    gap: 2vw;
     width: 100%;
-    padding: 0 0.2rem;
+    padding: 0 2vw;
     height: auto;
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
     margin-top: 0;
-    box-sizing: border-box;
+    align-items: stretch;
   }
+
   .level-card {
-    min-width: 180px;
-    max-width: 180px;
-    width: 180px;
-    height: auto;
+    width: 80vw;
+    max-width: 30%;
+    min-width: 0;
+    height: 100%;
     margin: 0;
-    margin-bottom: 0;
     scroll-snap-align: start;
-    flex-shrink: 0;
-    font-size: 0.9rem;
+    flex: 1 1 0;
+    font-size: 0.5rem;
+    padding: 0.4em 0.5em 0.5em 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+  }
+
+  .level-img-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 0;
+    border-radius: 0.6em;
+    overflow: hidden;
+    margin-bottom: 0.3em;
+    border: 0.15em solid #5ec3ff44;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+  }
+  .level-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+  .level-title {
+    font-family: 'Xolonium', Arial, sans-serif;
+    font-size: 0.8em;
+    color: #5ec3ff;
+    font-weight: bold;
+    margin-bottom: 0.1em;
+    text-shadow: 0 0 8px #5ec3ff88;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .level-desc {
+    display: none;
   }
   .back-row {
     gap: 0.3rem;
     margin-top: 0.5rem;
-    padding-right: 2%;
+    padding-right: 4vw;
     width: 100%;
     box-sizing: border-box;
   }
@@ -402,7 +469,7 @@ body {
   text-transform: uppercase;
   text-align: left;
   margin-top: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   padding-left: 4%;
   width: 100%;
   box-sizing: border-box;
@@ -425,33 +492,41 @@ body {
   z-index: 1;
   margin: 0 auto;
   box-sizing: border-box;
+  max-width: 100%;
+  padding: 0;
 }
 .level-select-row {
   display: flex;
   flex-direction: row;
   gap: 2vw;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: center;
+  align-items: stretch;
   height: 100%;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0.5rem 0 0.5rem 0;
 }
 .level-card {
   background: rgba(10, 20, 40, 0.95);
   border: 3px solid #1976d2;
   border-radius: 18px;
   box-shadow: 0 0 24px #1976d288, 0 0 2px #fff8;
-  width: 480px;
-  height: calc(100% - 2.5rem);
+  width: calc(100% / 3);
+  min-width: 0;
+  max-width: none;
+  height: 100%;
   max-height: none;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   padding: 0.7rem 1rem 1rem 1rem;
   position: relative;
   transition: box-shadow 0.2s, border-color 0.2s;
+  flex: 1 1 0;
+  margin: 0;
 }
 .level-card:hover {
   border-color: #5ec3ff;
@@ -468,6 +543,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 1;
+  min-height: 0;
 }
 .level-img {
   width: 100%;
@@ -482,6 +559,8 @@ body {
   font-weight: bold;
   margin-bottom: 0.7rem;
   text-shadow: 0 0 8px #5ec3ff88;
+  flex-shrink: 1;
+  min-height: 0;
 }
 .level-desc {
   font-family: 'Xolonium', Arial, sans-serif;
@@ -490,6 +569,8 @@ body {
   opacity: 0.85;
   margin-bottom: 1.2rem;
   text-align: left;
+  flex-shrink: 1;
+  min-height: 0;
 }
 .arrow {
   background: none;
@@ -539,7 +620,7 @@ body {
   }
   .projects-header {
     font-size: 2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.15rem;
     padding-left: 2%;
   }
   .arrow {
@@ -547,6 +628,7 @@ body {
   }
   .menu-bar {
     margin-top: 0;
+    max-width: 100%;
   }
   .level-select-row {
     gap: 1.2rem;
@@ -554,14 +636,19 @@ body {
     overflow-x: auto;
   }
   .level-card {
-    min-width: 280px;
-    max-width: 280px;
+    min-width: 28%;
+    max-width: 28%;
     width: 280px;
     height: auto;
     margin: 0;
     margin-bottom: 0;
     scroll-snap-align: start;
     flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .level-title {
+    font-size: 0.7rem;
   }
 }
 .level-card.selected {
@@ -655,3 +742,4 @@ body {
   100% { opacity: 0.97; }
 }
 </style>
+
