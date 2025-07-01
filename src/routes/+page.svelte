@@ -341,7 +341,7 @@ onMount(() => {
     <rect x="5" y="6" width="1" height="12" rx="0.5" fill="#1976d2"/>
     <rect x="18" y="6" width="1" height="12" rx="0.5" fill="#1976d2"/>
   </svg>
-  <div class="radio-pulse"></div>
+  <div class="radio-pulse" class:hidden={radioExpanded}></div>
   
   <!-- Speaker Profile -->
   <div class="speaker-profile">
@@ -628,6 +628,10 @@ html, body {
   border-radius: 50%;
   animation: radio-pulse 2s infinite;
   opacity: 0;
+}
+
+.radio-pulse.hidden {
+  display: none;
 }
 
 @keyframes radio-pulse {
