@@ -13,6 +13,7 @@
   let selected = 0; // index of highlighted card in visibleProjects
   let levelSelectRow: HTMLElement;
   let isMobile = false;
+  let crtMode = false;
 
   function updateIsMobile() {
     if (typeof window !== 'undefined') {
@@ -29,6 +30,12 @@
   $: visibleProjects = isMobile ? projects : projects.slice(start, start + visibleCount);
 
   onMount(() => {
+    // Robustly read CRT mode from localStorage
+    if (typeof window !== 'undefined') {
+      crtMode = localStorage.getItem('crtMode') === 'true';
+    } else {
+      crtMode = false;
+    }
     updateIsMobile();
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateIsMobile);
@@ -99,45 +106,85 @@
   }
 </script>
 
-<div class="tv-frame">
-  <div class="crt-overlay"></div>
-  <video autoplay loop muted playsinline class="background-video">
-    <source src="/menu_background.webm" type="video/webm" />
-    Your browser does not support the video tag.
-  </video>
-  <div class="projects-header">Projects</div>
-  <div class="menu-bar">
-    <button class="arrow left" on:click={prev} aria-label="Previous Projects" disabled={start === 0}>
-      <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="32,0 13,60 32,120" fill="#5ec3ff"/>
-        <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
-      </svg>
-    </button>
-    <div class="level-select-row" bind:this={levelSelectRow}>
-      {#each visibleProjects as project, i}
-        <div class="level-card {selected === i ? 'selected' : ''}">
-          <div class="level-img-wrapper">
-            <img src={project.image} alt={project.title} class="level-img" />
+{#if crtMode}
+  <div class="tv-frame">
+    <div class="crt-overlay"></div>
+    <video autoplay loop muted playsinline class="background-video">
+      <source src="/menu_background.webm" type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="projects-header">Projects</div>
+    <div class="menu-bar">
+      <button class="arrow left" on:click={prev} aria-label="Previous Projects" disabled={start === 0}>
+        <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="32,0 13,60 32,120" fill="#5ec3ff"/>
+          <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
+        </svg>
+      </button>
+      <div class="level-select-row" bind:this={levelSelectRow}>
+        {#each visibleProjects as project, i}
+          <div class="level-card {selected === i ? 'selected' : ''}">
+            <div class="level-img-wrapper">
+              <img src={project.image} alt={project.title} class="level-img" />
+            </div>
+            <div class="level-title">{project.title}</div>
+            <div class="level-desc">{project.description}</div>
           </div>
-          <div class="level-title">{project.title}</div>
-          <div class="level-desc">{project.description}</div>
-        </div>
-      {/each}
+        {/each}
+      </div>
+      <button class="arrow right" on:click={next} aria-label="Next Projects" disabled={start + visibleCount >= projects.length}>
+        <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0,0 19,60 0,120" fill="#5ec3ff"/>
+          <polygon points="2,6 15,60 2,114" fill="#1976d2"/>
+        </svg>
+      </button>
     </div>
-    <button class="arrow right" on:click={next} aria-label="Next Projects" disabled={start + visibleCount >= projects.length}>
-      <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="0,0 19,60 0,120" fill="#5ec3ff"/>
-        <polygon points="2,6 15,60 2,114" fill="#1976d2"/>
-      </svg>
-    </button>
+    <div class="back-row">
+      <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
+      <div class="select-label">= SELECT</div>
+    </div>
+    <div class="tv-stand"></div>
+    <div class="tv-base"></div>
   </div>
-  <div class="back-row">
-    <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
-    <div class="select-label">= SELECT</div>
+{:else}
+  <!-- fallback: render the normal layout, or just the CRT layout always if you prefer -->
+  <div class="projects-bg">
+    <video autoplay loop muted playsinline class="background-video">
+      <source src="/menu_background.webm" type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="projects-header">Projects</div>
+    <div class="menu-bar">
+      <button class="arrow left" on:click={prev} aria-label="Previous Projects" disabled={start === 0}>
+        <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="32,0 13,60 32,120" fill="#5ec3ff"/>
+          <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
+        </svg>
+      </button>
+      <div class="level-select-row" bind:this={levelSelectRow}>
+        {#each visibleProjects as project, i}
+          <div class="level-card {selected === i ? 'selected' : ''}">
+            <div class="level-img-wrapper">
+              <img src={project.image} alt={project.title} class="level-img" />
+            </div>
+            <div class="level-title">{project.title}</div>
+            <div class="level-desc">{project.description}</div>
+          </div>
+        {/each}
+      </div>
+      <button class="arrow right" on:click={next} aria-label="Next Projects" disabled={start + visibleCount >= projects.length}>
+        <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0,0 19,60 0,120" fill="#5ec3ff"/>
+          <polygon points="2,6 15,60 2,114" fill="#1976d2"/>
+        </svg>
+      </button>
+    </div>
+    <div class="back-row">
+      <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
+      <div class="select-label">= SELECT</div>
+    </div>
   </div>
-  <div class="tv-stand"></div>
-  <div class="tv-base"></div>
-</div>
+{/if}
 
 <style>
 body {
@@ -328,7 +375,6 @@ body {
   .projects-header {
     font-size: 1.1rem;
     margin-top: 0.5rem;
-    margin-bottom: 0.15rem;
     padding-left: 4vw;
     padding-right: 4vw;
     width: 100%;
@@ -477,7 +523,7 @@ body {
 
 .menu-bar {
   width: 100%;
-  height: 75%;
+  height: 75vh;
   background: rgba(10, 20, 40, 0.85);
   border-top: 3px solid #1976d2;
   border-bottom: 3px solid #1976d2;
@@ -507,7 +553,7 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
   margin: 0;
-  padding: 0.5rem 0 0.5rem 0;
+  padding: 0.5rem 0.5vw 0.5rem 0.5vw;
 }
 .level-card {
   background: rgba(10, 20, 40, 0.95);
@@ -575,8 +621,8 @@ body {
 .arrow {
   background: none;
   border: none;
-  padding: 0;
-  margin: 0 2vw;
+  padding: 0 0.2vw;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -591,8 +637,8 @@ body {
 }
 .arrow-svg {
   display: block;
-  height: 50vh;
-  max-height: 50%;
+  height: 320px;
+  max-height: 90vh;
   width: auto;
   filter: drop-shadow(0 0 8px #5ec3ff88);
   transition: filter 0.2s;
@@ -740,6 +786,12 @@ body {
   0% { opacity: 0.97; }
   50% { opacity: 1; }
   100% { opacity: 0.97; }
+}
+.arrow.left {
+  margin-left: 6vw;
+}
+.arrow.right {
+  margin-right: 6vw;
 }
 </style>
 
