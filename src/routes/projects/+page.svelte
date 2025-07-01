@@ -9,7 +9,7 @@
     { title: 'Project 6', image: 'https://picsum.photos/400/250?random=6', description: 'Description for Project 6.' }
   ];
   let start = 0;
-  const visibleCount = 3;
+  let visibleCount = 3;
   let selected = 0; // index of highlighted card in visibleProjects
   let levelSelectRow: HTMLElement;
   let isMobile = false;
@@ -47,16 +47,30 @@
       }
     };
     
-    updateIsMobile();
     if (typeof window !== 'undefined') {
-      window.addEventListener('resize', updateIsMobile);
       window.addEventListener('storage', handleStorageChange);
     }
+
+    updateIsMobile();
+    window.addEventListener('resize', updateIsMobile);
+
     // Position Project 1 at the left edge on mobile
     if (isMobile && levelSelectRow) {
       setTimeout(() => {
         levelSelectRow.scrollLeft = 0;
       }, 100);
+    }
+    
+    // Also reset scroll position when mobile state changes
+    const resetScroll = () => {
+      if (isMobile && levelSelectRow) {
+        levelSelectRow.scrollLeft = 0;
+      }
+    };
+    
+    // Reset scroll when mobile state changes
+    $: if (isMobile && levelSelectRow) {
+      setTimeout(resetScroll, 50);
     }
 
     // Keyboard navigation
@@ -91,7 +105,7 @@
             }
           }
         } else if (e.key === 'ArrowRight') {
-          if (selected < projects.length - 1) {
+          if (selected < visibleProjects.length - 1) {
             selected += 1;
             // Scroll if needed
             const card = levelSelectRow.children[selected] as HTMLElement;
@@ -116,6 +130,12 @@
   // Reset highlight when carousel moves
   $: if (!isMobile) {
     if (selected > visibleProjects.length - 1) selected = visibleProjects.length - 1;
+  }
+  
+  // Reset start position for mobile
+  $: if (isMobile) {
+    start = 0;
+    selected = 0;
   }
 </script>
 
@@ -411,13 +431,13 @@ body {
   .menu-bar {
     flex-direction: column;
     width: 100%;
-    height: 0;
-    flex: 1;
-    min-width: 0;
-    padding: 0;
+    height: auto;
+    min-height: 0;
+    flex: none;
+    padding: clamp(0.3rem, 1vh, 0.5rem) 0;
     overflow: hidden;
     overflow-y: hidden;
-    justify-content: center;
+    justify-content: left;
   }
 
   .level-select-row {
@@ -425,13 +445,15 @@ body {
     flex-direction: row;
     gap: clamp(0.5rem, 2vw, 1rem);
     width: 100%;
-    padding: 0 clamp(0.5rem, 2vw, 1rem);
+    padding: 0;
     height: auto;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     margin-top: 0;
     align-items: stretch;
+    justify-content: flex-start;
+    box-sizing: border-box;
   }
 
   .level-card {
@@ -450,6 +472,15 @@ body {
     overflow: hidden;
     margin-top: 0.2em;
     margin-bottom: 0.2em;
+    box-sizing: border-box;
+  }
+  
+  .level-card:first-child {
+    margin-left: clamp(0.5rem, 2vw, 1rem);
+  }
+  
+  .level-card:last-child {
+    margin-right: clamp(0.5rem, 2vw, 1rem);
   }
 
   .level-img-wrapper {
@@ -566,7 +597,7 @@ body {
   display: flex;
   flex-direction: row;
   gap: clamp(0.5rem, 2vw, 2rem);
-  justify-content: center;
+  justify-content: left;
   align-items: stretch;
   height: 100%;
   width: 100%;
