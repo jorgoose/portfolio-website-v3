@@ -3,7 +3,7 @@
 
 const menuItems = [
   { label: 'ABOUT', link: '#about' },
-  { label: 'PROJECTS', link: '#projects' },
+  { label: 'PROJECTS', link: '/projects' },
   { label: 'SKILLS', link: '#skills' },
   { label: 'CONTACT', link: '#contact' },
   { label: 'RESUME', link: '#resume' }
@@ -81,13 +81,21 @@ const menuItems = [
 .halo-title {
   font-size: 9vw;
   letter-spacing: 1rem;
-  color: #e0eaff;
-  text-shadow: 0 0 40px #5ec3ff, 0 0 10px #fff, 0 0 2px #5ec3ff;
+  background: linear-gradient(
+    to bottom,
+    #FFFFFF 0%,
+    #FFFFFF 50%,
+    #1976D2 75%,
+    #001A3D 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+  0 2px 8px #001A3D66, 
+  0 0 140px #FFFFFF;
   font-family: 'Halo', 'Halo Outline', sans-serif;
-  z-index: 2;
-  position: relative;
-  margin: 0;
-  padding: 0.5em 0 0.2em 0;
 }
 .menu {
   list-style: none;
