@@ -47,6 +47,18 @@ function handleVideoLoad(event: Event) {
   }
 }
 
+function playVideo() {
+  // Find all video elements and try to play them
+  const videos = document.querySelectorAll('video');
+  videos.forEach(video => {
+    video.play().then(() => {
+      videoAutoplayFailed = false;
+    }).catch(error => {
+      console.log('Video play failed:', error);
+    });
+  });
+}
+
 onMount(() => {
   // Read CRT mode from localStorage
   if (typeof window !== 'undefined') {
@@ -82,11 +94,16 @@ onMount(() => {
       <ul>
         <li>Turn off Low Power Mode (iOS)</li>
         <li>Allow autoplay in your browser settings</li>
-        <li>Or tap the video to play manually</li>
+        <li>Or click "Play Video" below</li>
       </ul>
-      <button class="notification-close" on:click={() => videoAutoplayFailed = false}>
-        Got it
-      </button>
+      <div class="notification-buttons">
+        <button class="notification-play" on:click={playVideo}>
+          ▶️ Play Video
+        </button>
+        <button class="notification-close" on:click={() => videoAutoplayFailed = false}>
+          Got it
+        </button>
+      </div>
     </div>
   </div>
 {/if}
@@ -257,6 +274,30 @@ html, body {
 
 .notification-content li {
   margin: 0.5rem 0;
+}
+
+.notification-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notification-play {
+  background: #00ff88;
+  color: #181818;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Xolonium', Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.notification-play:hover {
+  background: #00cc6a;
 }
 
 .notification-close {
