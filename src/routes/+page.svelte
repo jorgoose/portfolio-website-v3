@@ -702,6 +702,13 @@ html, body {
   /* Adjust pulse animation for mobile */
   .radio-pulse {
     border-width: 1px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
   }
   
   @keyframes radio-pulse {
