@@ -27,6 +27,9 @@
   function next() {
     if (start + visibleCount < projects.length) start += 1;
   }
+  
+
+  
   $: visibleProjects = isMobile ? projects : projects.slice(start, start + visibleCount);
 
   onMount(() => {
@@ -36,9 +39,18 @@
     } else {
       crtMode = false;
     }
+    
+    // Listen for storage changes (in case user has multiple tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'crtMode') {
+        crtMode = e.newValue === 'true';
+      }
+    };
+    
     updateIsMobile();
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateIsMobile);
+      window.addEventListener('storage', handleStorageChange);
     }
     // Position Project 1 at the left edge on mobile
     if (isMobile && levelSelectRow) {
@@ -96,6 +108,7 @@
       document.removeEventListener('keydown', handleKeyDown);
       if (typeof window !== 'undefined') {
         window.removeEventListener('resize', updateIsMobile);
+        window.removeEventListener('storage', handleStorageChange);
       }
     };
   });
@@ -105,6 +118,8 @@
     if (selected > visibleProjects.length - 1) selected = visibleProjects.length - 1;
   }
 </script>
+
+
 
 {#if crtMode}
   <div class="tv-frame">
@@ -187,6 +202,8 @@
 {/if}
 
 <style>
+
+
 body {
   min-height: 100vh;
   background: radial-gradient(ellipse at center, #222 60%, #111 100%) fixed, url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23111111"/><circle cx="50" cy="50" r="40" fill="%23222222" fill-opacity="0.08"/></svg>');
@@ -394,8 +411,8 @@ body {
   .menu-bar {
     flex-direction: column;
     width: 100%;
-    height: 55vw;
-    max-height: 60vw;
+    height: 0;
+    flex: 1;
     min-width: 0;
     padding: 0;
     overflow: hidden;
@@ -406,9 +423,9 @@ body {
   .level-select-row {
     display: flex;
     flex-direction: row;
-    gap: 2vw;
+    gap: clamp(0.5rem, 2vw, 1rem);
     width: 100%;
-    padding: 0 2vw;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
     height: auto;
     overflow-x: auto;
     overflow-y: hidden;
@@ -418,15 +435,15 @@ body {
   }
 
   .level-card {
-    width: 80vw;
+    width: clamp(200px, 80%, 300px);
     max-width: 30%;
     min-width: 0;
     height: 100%;
     margin: 0;
     scroll-snap-align: start;
     flex: 1 1 0;
-    font-size: 0.5rem;
-    padding: 0.4em 0.5em 0.5em 0.5em;
+    font-size: clamp(0.4rem, 1.5vh, 0.8rem);
+    padding: clamp(0.2em, 1vh, 0.4em) clamp(0.3em, 1vh, 0.5em) clamp(0.3em, 1vh, 0.5em);
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -440,10 +457,10 @@ body {
     aspect-ratio: 16 / 9;
     height: auto;
     min-height: 0;
-    border-radius: 0.6em;
+    border-radius: clamp(0.3em, 1vh, 0.6em);
     overflow: hidden;
-    margin-bottom: 0.3em;
-    border: 0.15em solid #5ec3ff44;
+    margin-bottom: clamp(0.1em, 0.5vh, 0.3em);
+    border: clamp(0.05em, 0.1vh, 0.15em) solid #5ec3ff44;
     background: #111;
     display: flex;
     align-items: center;
@@ -458,10 +475,10 @@ body {
   }
   .level-title {
     font-family: 'Xolonium', Arial, sans-serif;
-    font-size: 0.8em;
+    font-size: clamp(0.6em, 2vh, 0.8em);
     color: #5ec3ff;
     font-weight: bold;
-    margin-bottom: 0.1em;
+    margin-bottom: clamp(0.05em, 0.3vh, 0.1em);
     text-shadow: 0 0 8px #5ec3ff88;
     flex: 1 1 auto;
     white-space: nowrap;
@@ -472,14 +489,14 @@ body {
     display: none;
   }
   .back-row {
-    gap: 0.3rem;
-    margin-top: 0.5rem;
-    padding-right: 4vw;
+    gap: clamp(0.1rem, 1vw, 0.3rem);
+    margin-top: clamp(0.2rem, 1vh, 0.5rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
     width: 100%;
     box-sizing: border-box;
   }
   .back-label, .select-label {
-    font-size: 0.9rem;
+    font-size: clamp(0.6rem, 2vh, 0.9rem);
   }
   .select-label {
     display: none;
@@ -507,26 +524,29 @@ body {
 .projects-header {
   position: relative;
   font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 3.8rem;
+  font-size: clamp(1.5rem, 8vw, 3.8rem);
   color: #5ec3ff;
   letter-spacing: 0.15em;
   z-index: 2;
   text-shadow: 0 0 8px #5ec3ff88, 0 0 2px #fff8;
   text-transform: uppercase;
   text-align: left;
-  margin-top: 2.5rem;
-  margin-bottom: 0.3rem;
+  margin-top: clamp(0.5rem, 3vh, 2.5rem);
+  margin-bottom: clamp(0.1rem, 1vh, 0.3rem);
   padding-left: 4%;
   width: 100%;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .menu-bar {
   width: 100%;
-  height: 75vh;
+  height: 0;
+  flex: 1;
+  min-height: 0;
   background: rgba(10, 20, 40, 0.85);
-  border-top: 3px solid #1976d2;
-  border-bottom: 3px solid #1976d2;
+  border-top: clamp(1px, 0.3vh, 3px) solid #1976d2;
+  border-bottom: clamp(1px, 0.3vh, 3px) solid #1976d2;
   border-left: none;
   border-right: none;
   border-radius: 0;
@@ -540,11 +560,12 @@ body {
   box-sizing: border-box;
   max-width: 100%;
   padding: 0;
+  overflow: hidden;
 }
 .level-select-row {
   display: flex;
   flex-direction: row;
-  gap: 2vw;
+  gap: clamp(0.5rem, 2vw, 2rem);
   justify-content: center;
   align-items: stretch;
   height: 100%;
@@ -553,12 +574,12 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
   margin: 0;
-  padding: 0.5rem 0.5vw 0.5rem 0.5vw;
+  padding: clamp(0.2rem, 0.5vw, 0.5rem) clamp(0.2rem, 0.5vw, 0.5rem);
 }
 .level-card {
   background: rgba(10, 20, 40, 0.95);
-  border: 3px solid #1976d2;
-  border-radius: 18px;
+  border: clamp(1px, 0.3vh, 3px) solid #1976d2;
+  border-radius: clamp(8px, 1.5vh, 18px);
   box-shadow: 0 0 24px #1976d288, 0 0 2px #fff8;
   width: calc(100% / 3);
   min-width: 0;
@@ -568,11 +589,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 0.7rem 1rem 1rem 1rem;
+  padding: clamp(0.3rem, 1vh, 0.7rem) clamp(0.5rem, 1.5vh, 1rem) clamp(0.5rem, 1.5vh, 1rem);
   position: relative;
   transition: box-shadow 0.2s, border-color 0.2s;
   flex: 1 1 0;
   margin: 0;
+  overflow: hidden;
 }
 .level-card:hover {
   border-color: #5ec3ff;
@@ -581,10 +603,10 @@ body {
 .level-img-wrapper {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 10px;
+  border-radius: clamp(4px, 1vh, 10px);
   overflow: hidden;
-  margin-bottom: 1.2rem;
-  border: 2px solid #5ec3ff44;
+  margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
+  border: clamp(1px, 0.2vh, 2px) solid #5ec3ff44;
   background: #111;
   display: flex;
   align-items: center;
@@ -600,20 +622,20 @@ body {
 }
 .level-title {
   font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 1.5rem;
+  font-size: clamp(0.8rem, 2.5vh, 1.5rem);
   color: #5ec3ff;
   font-weight: bold;
-  margin-bottom: 0.7rem;
+  margin-bottom: clamp(0.3rem, 1vh, 0.7rem);
   text-shadow: 0 0 8px #5ec3ff88;
   flex-shrink: 1;
   min-height: 0;
 }
 .level-desc {
   font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 1.05rem;
+  font-size: clamp(0.6rem, 1.8vh, 1.05rem);
   color: #5ec3ff;
   opacity: 0.85;
-  margin-bottom: 1.2rem;
+  margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
   text-align: left;
   flex-shrink: 1;
   min-height: 0;
@@ -621,7 +643,7 @@ body {
 .arrow {
   background: none;
   border: none;
-  padding: 0 0.2vw;
+  padding: 0 clamp(0.1rem, 0.2vw, 0.2rem);
   margin: 0;
   display: flex;
   align-items: center;
@@ -630,6 +652,7 @@ body {
   z-index: 2;
   transition: filter 0.2s;
   height: 100%;
+  flex-shrink: 0;
 }
 .arrow:disabled {
   opacity: 0.3;
@@ -637,7 +660,7 @@ body {
 }
 .arrow-svg {
   display: block;
-  height: 320px;
+  height: clamp(120px, 25vh, 320px);
   max-height: 90vh;
   width: auto;
   filter: drop-shadow(0 0 8px #5ec3ff88);
@@ -672,6 +695,10 @@ body {
   .arrow {
     display: none;
   }
+  .arrow.left, .arrow.right {
+    margin-left: 0;
+    margin-right: 0;
+  }
   .menu-bar {
     margin-top: 0;
     max-width: 100%;
@@ -682,9 +709,9 @@ body {
     overflow-x: auto;
   }
   .level-card {
-    min-width: 28%;
+    min-width: clamp(200px, 28%, 280px);
     max-width: 28%;
-    width: 280px;
+    width: clamp(200px, 80%, 280px);
     height: auto;
     margin: 0;
     margin-bottom: 0;
@@ -694,7 +721,7 @@ body {
     justify-content: center;
   }
   .level-title {
-    font-size: 0.7rem;
+    font-size: clamp(0.5rem, 2vh, 0.7rem);
   }
 }
 .level-card.selected {
@@ -709,13 +736,14 @@ body {
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  gap: 2rem;
-  margin-top: 1.5rem;
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-top: clamp(0.5rem, 2vh, 1.5rem);
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 .back-label, .select-label {
   font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 2rem;
+  font-size: clamp(1rem, 3vh, 2rem);
   color: #5ec3ff;
   letter-spacing: 0.12em;
   text-shadow: 0 0 8px #5ec3ff88, 0 0 2px #fff8;
@@ -788,10 +816,10 @@ body {
   100% { opacity: 0.97; }
 }
 .arrow.left {
-  margin-left: 6vw;
+  margin-left: clamp(1rem, 6vw, 3rem);
 }
 .arrow.right {
-  margin-right: 6vw;
+  margin-right: clamp(1rem, 6vw, 3rem);
 }
 </style>
 

@@ -1,6 +1,7 @@
 <script lang="ts">
+import { onMount } from 'svelte';
+
 let crtMode = false;
-// Removed HaloRing3D import
 
 const menuItems = [
   { label: 'ABOUT', link: '#about' },
@@ -9,10 +10,37 @@ const menuItems = [
   { label: 'CONTACT', link: '#contact' },
   { label: 'RESUME', link: '#resume' }
 ];
+
+function toggleCrtMode() {
+  crtMode = !crtMode;
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('crtMode', crtMode.toString());
+  }
+}
+
+onMount(() => {
+  // Read CRT mode from localStorage
+  if (typeof window !== 'undefined') {
+    crtMode = localStorage.getItem('crtMode') === 'true';
+    
+    // Listen for storage changes (in case user has multiple tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'crtMode') {
+        crtMode = e.newValue === 'true';
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }
+});
 </script>
 
 <div class="crt-toggle-bar">
-  <button class="crt-toggle" on:click={() => crtMode = !crtMode}>
+  <button class="crt-toggle" on:click={toggleCrtMode}>
     CRT Mode: {crtMode ? 'On' : 'Off'}
   </button>
 </div>
@@ -153,9 +181,10 @@ const menuItems = [
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: flex-start;
+  justify-content: center;
   box-sizing: border-box;
   z-index: 10;
+  padding: clamp(1rem, 3vh, 2rem);
 }
 .crt-overlay {
   pointer-events: none;
@@ -296,6 +325,11 @@ const menuItems = [
   width: 100%;
   margin-bottom: 2rem;
 }
+
+/* CRT mode container scaling - only applies when inside TV frame */
+.tv-frame .title-sigil-container {
+  margin-bottom: clamp(0.5rem, 2vh, 1.5rem);
+}
 .sigil-container {
   position: absolute;
   top: 50%;
@@ -307,6 +341,12 @@ const menuItems = [
   min-width: 320px;
   pointer-events: none;
   opacity: 0.5;
+}
+
+/* CRT mode sigil scaling - only applies when inside TV frame */
+.tv-frame .sigil-container {
+  width: clamp(200px, 80%, 800px);
+  max-width: 90%;
 }
 .sigil-svg {
   width: 100%;
@@ -332,6 +372,12 @@ const menuItems = [
   0 0 140px #FFFFFF;
   font-family: 'Halo', 'Halo Outline', sans-serif;
 }
+
+/* CRT mode text scaling - only applies when inside TV frame */
+.tv-frame .halo-title {
+  font-size: clamp(2rem, 8vw, 4rem);
+  letter-spacing: clamp(0.2rem, 1vw, 0.8rem);
+}
 .menu {
   list-style: none;
   padding: 0;
@@ -350,6 +396,12 @@ const menuItems = [
   transition: color 0.2s, text-shadow 0.2s;
   font-family: 'Xolonium', Arial, sans-serif;
   text-align: center;
+}
+
+/* CRT mode text scaling - only applies when inside TV frame */
+.tv-frame .menu li a {
+  font-size: clamp(1rem, 3vw, 2rem);
+  letter-spacing: clamp(0.1rem, 0.3vw, 0.2rem);
 }
 .menu li a:hover {
   color: #fff;
@@ -383,6 +435,17 @@ const menuItems = [
   }
   .menu li a {
     font-size: 1.1rem;
+  }
+  
+  /* CRT mode mobile scaling */
+  .tv-frame .halo-title {
+    font-size: clamp(1.5rem, 6vw, 3rem);
+    letter-spacing: clamp(0.1rem, 0.5vw, 0.4rem);
+  }
+  
+  .tv-frame .menu li a {
+    font-size: clamp(0.8rem, 2.5vw, 1.5rem);
+    letter-spacing: clamp(0.05rem, 0.2vw, 0.1rem);
   }
 }
 </style>
