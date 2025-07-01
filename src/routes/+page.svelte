@@ -628,6 +628,7 @@ html, body {
   border-radius: 50%;
   animation: radio-pulse 2s infinite;
   opacity: 0;
+  box-sizing: border-box;
 }
 
 .radio-pulse.hidden {
@@ -713,6 +714,7 @@ html, body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    box-sizing: border-box;
   }
   
   @keyframes radio-pulse {
