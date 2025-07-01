@@ -10,6 +10,8 @@
   ];
   let start = 0;
   const visibleCount = 3;
+  let levelSelectRow: HTMLElement;
+  
   function prev() {
     if (start > 0) start -= 1;
   }
@@ -17,6 +19,15 @@
     if (start + visibleCount < projects.length) start += 1;
   }
   $: visibleProjects = projects.slice(start, start + visibleCount);
+  
+  onMount(() => {
+    // Center the first project on mobile
+    if (window.innerWidth <= 700 && levelSelectRow) {
+      setTimeout(() => {
+        levelSelectRow.scrollLeft = 0;
+      }, 100);
+    }
+  });
 </script>
 
 <div class="projects-bg">
@@ -32,7 +43,7 @@
         <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
       </svg>
     </button>
-    <div class="level-select-row">
+    <div class="level-select-row" bind:this={levelSelectRow}>
       {#each visibleProjects as project}
         <div class="level-card">
           <div class="level-img-wrapper">
@@ -58,8 +69,8 @@
   background: transparent;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 .background-video {
@@ -85,10 +96,6 @@
   text-transform: uppercase;
 }
 .menu-bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 100vw;
   height: 75vh;
   background: rgba(10, 20, 40, 0.85);
@@ -104,6 +111,7 @@
   justify-content: center;
   z-index: 1;
   padding: 2.5vw 0;
+  margin: 0 auto;
 }
 .level-select-row {
   display: flex;
@@ -222,10 +230,52 @@
     height: 60px;
     max-height: 60px;
   }
-  .projects-header {
+    .projects-header {
     top: 4vw;
     left: 4vw;
     font-size: 1.5rem;
+  }
+}
+@media (max-width: 700px) {
+  .projects-bg {
+    justify-content: center;
+    padding-top: 0;
+  }
+  .projects-header {
+    position: relative;
+    top: auto;
+    left: auto;
+    font-size: 2rem;
+    text-align: left;
+    margin-right: 5rem;
+  }
+  .arrow {
+    display: none;
+  }
+  .menu-bar {
+    margin-top: 0;
+  }
+  .level-select-row {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 1.2rem;
+    width: 100%;
+    padding: 0 1rem;
+    height: 100%;
+    scroll-snap-type: x mandatory;
+    margin-top: 0;
+    scroll-padding-left: 1rem;
+    justify-content: flex-start;
+  }
+  .level-card {
+    min-width: 280px;
+    max-width: 280px;
+    width: 280px;
+    height: auto;
+    margin: 0;
+    margin-bottom: 0;
+    scroll-snap-align: start;
+    flex-shrink: 0;
   }
 }
 </style>
