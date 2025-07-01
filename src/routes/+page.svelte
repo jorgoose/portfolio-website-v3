@@ -133,6 +133,15 @@ onMount(() => {
 {/if}
 
 <style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .crt-toggle-bar {
   width: 100vw;
   display: flex;
@@ -140,7 +149,10 @@ onMount(() => {
   align-items: center;
   padding: 1rem 2rem 0.5rem 0;
   z-index: 100;
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  box-sizing: border-box;
 }
 .crt-toggle {
   background: #181818;
@@ -408,7 +420,8 @@ onMount(() => {
   text-shadow: 0 0 20px #fff, 0 0 10px #5ec3ff;
 }
 .halo-bg {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background: radial-gradient(ellipse at center, #222 0%, #111 100%);
   display: flex;
   flex-direction: column;
@@ -417,6 +430,7 @@ onMount(() => {
   color: #b8d0ff;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 .background-video {
   position: fixed;
