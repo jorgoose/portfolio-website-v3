@@ -16,7 +16,7 @@ let isTransitioning = false;
 const menuItems = [
   { label: 'ABOUT', link: '/about' },
   { label: 'PROJECTS', link: '/projects' },
-  { label: 'SKILLS', link: '#skills' },
+  { label: 'SKILLS', link: '/skills' },
   { label: 'CONTACT', link: '#contact' },
   { label: 'RESUME', link: '#resume' }
 ];
