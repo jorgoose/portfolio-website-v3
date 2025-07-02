@@ -15,10 +15,10 @@ let isTransitioning = false;
 
 const menuItems = [
   { label: 'ABOUT', link: '/about' },
+  { label: 'EXPERIENCE', link: '/experience' },
   { label: 'PROJECTS', link: '/projects' },
   { label: 'SKILLS', link: '/skills' },
-  { label: 'CONTACT', link: '/contact' },
-  { label: 'RESUME', link: '#resume' }
+  { label: 'CONTACT', link: '/contact' }
 ];
 
 function toggleCrtMode() {
@@ -205,17 +205,17 @@ function startSpeakerTracking() {
   function updateSpeaker() {
     const currentTime = audioElement.currentTime;
     
-    if (currentTime >= 0 && currentTime < 7) {
+    if (currentTime >= 0 && currentTime < 6) {
       // 0:00 to 0:07 is Master Chief
       if (currentSpeaker !== 'chief' && !isTransitioning) {
         transitionToSpeaker('chief');
       }
-    } else if (currentTime >= 7 && currentTime < 23) {
+    } else if (currentTime >= 6 && currentTime < 31) {
       // 0:07 to 0:23 is Cortana
       if (currentSpeaker !== 'cortana' && !isTransitioning) {
         transitionToSpeaker('cortana');
       }
-    } else if (currentTime >= 23) {
+    } else if (currentTime >= 31) {
       // 0:23 to the end is Master Chief
       if (currentSpeaker !== 'chief' && !isTransitioning) {
         transitionToSpeaker('chief');
