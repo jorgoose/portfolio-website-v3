@@ -324,8 +324,8 @@ body {
     overflow-x: hidden;
   }
   .crt-background {
-    background: url('/CRT_bg.jpeg') 47.5% 55% no-repeat;
-    background-size: 275%;
+    background: url('/CRT_bg.jpeg') 47.5% 55.75% no-repeat;
+    background-size: 255%;
   }
   .tv-frame {
     width: 100vw;
@@ -333,24 +333,24 @@ body {
     min-width: 0;
     aspect-ratio: 4 / 3;
     border-width: 2vw;
-    border-radius: 0.5rem;
+    border-radius: 0.7rem;
     box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
   }
   .tv-frame::before {
-    border-radius: 0.3rem;
+    border-radius: 0.5rem;
   }
   .tv-frame::after {
-    border-radius: 0.2rem;
+    border-radius: 0.4rem;
   }
   .crt-overlay {
-    border-radius: 0.3rem;
+    border-radius: 0.5rem;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
   }
   .background-video {
-    border-radius: 0.3rem;
+    border-radius: 0.5rem;
     width: 100%;
     height: 100%;
     object-fit: cover;

@@ -17,7 +17,7 @@ const menuItems = [
   { label: 'ABOUT', link: '/about' },
   { label: 'PROJECTS', link: '/projects' },
   { label: 'SKILLS', link: '/skills' },
-  { label: 'CONTACT', link: '#contact' },
+  { label: 'CONTACT', link: '/contact' },
   { label: 'RESUME', link: '#resume' }
 ];
 
@@ -772,12 +772,39 @@ html, body {
   z-index: 2;
   padding: clamp(1rem, 3vh, 2rem);
 }
+
+.tv-frame::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border-radius: 2.8rem;
+  background: linear-gradient(120deg, rgba(255,255,255,0.13) 10%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.18) 100%);
+  z-index: 2;
+}
+
+.tv-frame::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border-radius: 2.7rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  z-index: 3;
+  mix-blend-mode: lighten;
+}
+
 .crt-overlay {
   pointer-events: none;
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
   z-index: 5;
-  border-radius: inherit;
   mix-blend-mode: lighten;
   background:
     repeating-linear-gradient(
@@ -874,17 +901,24 @@ html, body {
   }
 }
 @media (max-width: 700px) {
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
   .crt-background {
-    background: url('/CRT_bg.jpeg') 47.5% 55% no-repeat;
-    background-size: 275%; /* Double the desktop zoom of 168% */
+    background: url('/CRT_bg.jpeg') 47.5% 55.75% no-repeat;
+    background-size: 255%;
   }
   
   .tv-frame {
     width: 100vw;
     max-width: 100vw;
+    min-width: 0;
+    aspect-ratio: 4 / 3;
     border-width: 2vw;
     border-radius: 0.7rem;
-    min-width: 0;
+    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
   }
   .tv-frame::before {
     border-radius: 0.5rem;
@@ -892,15 +926,36 @@ html, body {
   .tv-frame::after {
     border-radius: 0.4rem;
   }
+  .crt-overlay {
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+  .background-video {
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    left: 0;
+    top: 0;
+  }
   .tv-stand {
     width: 60px;
     height: 10px;
     border-radius: 0 0 12px 12px / 0 0 6px 6px;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
   }
   .tv-base {
     width: 100px;
     height: 12px;
     border-radius: 0 0 24px 24px / 0 0 8px 8px;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translate(-50%, 0);
   }
   .tv-base::before {
     height: 2px;

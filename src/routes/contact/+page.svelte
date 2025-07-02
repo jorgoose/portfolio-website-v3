@@ -3,31 +3,27 @@
   
   let crtMode = false;
 
-  // About sections data
-  const aboutSections = [
+  // Contact sections data
+  const contactSections = [
     {
-      title: 'WHO I AM',
-      content: `I'm a passionate software developer with a love for creating immersive digital experiences. 
-My journey in technology began with a fascination for how code can bring ideas to life, 
-and it has evolved into a career focused on building robust, user-centered applications.`
+      title: 'EMAIL',
+      content: 'contact.jorgensen@gmail.com',
+      type: 'email'
     },
     {
-      title: 'MY APPROACH',
-      content: `I believe in writing clean, maintainable code that not only solves problems but also 
-creates delightful user experiences. Every project is an opportunity to learn, innovate, 
-and push the boundaries of what's possible in web development.`
+      title: 'LINKEDIN',
+      content: 'linkedin.com/in/logan-jorgensen',
+      type: 'link'
     },
     {
-      title: 'TECHNOLOGY',
-      content: `My expertise spans modern web technologies including React, Vue, Svelte, Node.js, 
-and cloud platforms. I'm constantly exploring new frameworks and tools to stay 
-at the forefront of web development.`
+      title: 'GITHUB',
+      content: 'github.com/jorgoose',
+      type: 'link'
     },
     {
-      title: 'BEYOND CODE',
-      content: `When I'm not coding, you'll find me exploring new technologies, contributing to 
-open-source projects, or sharing knowledge with the developer community. 
-I believe in continuous learning and collaboration.`
+      title: 'LOCATION',
+      content: 'Chicago, IL',
+      type: 'text'
     }
   ];
 
@@ -40,16 +36,26 @@ I believe in continuous learning and collaboration.`
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'ArrowUp') {
-      selectedSection = (selectedSection - 1 + aboutSections.length) % aboutSections.length;
+      selectedSection = (selectedSection - 1 + contactSections.length) % contactSections.length;
       menuRefs[selectedSection]?.focus();
       e.preventDefault();
     } else if (e.key === 'ArrowDown') {
-      selectedSection = (selectedSection + 1) % aboutSections.length;
+      selectedSection = (selectedSection + 1) % contactSections.length;
       menuRefs[selectedSection]?.focus();
       e.preventDefault();
     } else if (e.key === 'Enter' || e.key === ' ') {
-      // Already selected on focus
+      // Handle contact action based on type
+      handleContactAction(selectedSection);
       e.preventDefault();
+    }
+  }
+
+  function handleContactAction(idx: number) {
+    const section = contactSections[idx];
+    if (section.type === 'email') {
+      window.location.href = `mailto:${section.content}`;
+    } else if (section.type === 'link') {
+      window.open(`https://${section.content}`, '_blank');
     }
   }
 
@@ -82,11 +88,11 @@ I believe in continuous learning and collaboration.`
         <source src="/menu_background.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
-      <div class="about-header">About</div>
+      <div class="contact-header">Contact</div>
       <div class="menu-bar advanced-menu">
         <div class="menu-vertical">
           <div class="menu-list">
-            {#each aboutSections as section, idx}
+            {#each contactSections as section, idx}
               <div
                 class="menu-item {selectedSection === idx ? 'selected' : ''}"
                 bind:this={menuRefs[idx]}
@@ -101,24 +107,67 @@ I believe in continuous learning and collaboration.`
             {/each}
           </div>
           <div class="menu-content">
-            <div class="section-text">{aboutSections[selectedSection].content}</div>
+            <div class="contact-display">
+              {#if selectedSection === 0}
+                <div class="social-icons">
+                  <button class="social-icon" on:click={() => window.location.href = 'mailto:contact.jorgensen@gmail.com'} aria-label="Email">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                      <path fill="#5ec3ff" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                    </svg>
+                  </button>
+                </div>
+              {:else if selectedSection === 1}
+                <div class="social-icons">
+                  <button class="social-icon" on:click={() => window.open('https://linkedin.com/in/logan-jorgensen', '_blank')} aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                      <path fill="#5ec3ff" d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.46 12.92,11.24V10.13H10.13V18.5H12.92V13.57C12.92,12.8 13.54,12.17 14.31,12.17A1.4,1.4 0 0,1 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,5.95 7.81,5.19 6.88,5.19A1.69,1.69 0 0,0 5.19,6.88C5.19,7.81 5.95,8.56 6.88,8.56M8.27,18.5V10.13H5.5V18.5H8.27Z" />
+                    </svg>
+                  </button>
+                </div>
+              {:else if selectedSection === 2}
+                <div class="social-icons">
+                  <button class="social-icon" on:click={() => window.open('https://github.com/jorgoose', '_blank')} aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                      <path fill="#5ec3ff" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+                    </svg>
+                  </button>
+                </div>
+              {:else if selectedSection === 3}
+                <div class="social-icons">
+                  <svg viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="#5ec3ff" d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22S19,14.25 19,9A7,7 0 0,0 12,2Z" />
+                  </svg>
+                </div>
+              {/if}
+              <div class="section-text">
+                {#if contactSections[selectedSection].type === 'email' || contactSections[selectedSection].type === 'link'}
+                  <button 
+                    class="contact-link" 
+                    on:click={() => handleContactAction(selectedSection)}
+                    aria-label="Open {contactSections[selectedSection].title}"
+                  >
+                    {contactSections[selectedSection].content}
+                  </button>
+                {:else}
+                  {contactSections[selectedSection].content}
+                {/if}
+              </div>
+            </div>
           </div>
         </div>
-        <div class="about-icon-area">
-          <svg viewBox="0 0 120 120" aria-hidden="true" class="about-icon-svg" style="filter: drop-shadow(0 0 18px #5ec3ff88);">
+        <div class="contact-icon-area">
+          <svg viewBox="0 0 120 120" aria-hidden="true" class="contact-icon-svg" style="filter: drop-shadow(0 0 18px #5ec3ff88);">
             <defs>
-              <radialGradient id="aboutIconGradient" cx="60" cy="60" r="54" gradientUnits="userSpaceOnUse">
+              <radialGradient id="contactIconGradient" cx="60" cy="60" r="54" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="#5ec3ff" stop-opacity="0.7" />
                 <stop offset="70%" stop-color="#5ec3ff" stop-opacity="0.25" />
                 <stop offset="100%" stop-color="#1976d2" stop-opacity="0.18" />
               </radialGradient>
-              <linearGradient id="infoHighlight" x1="60" y1="30" x2="60" y2="90" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#fff" stop-opacity="0.7" />
-                <stop offset="100%" stop-color="#5ec3ff" stop-opacity="0.2" />
-              </linearGradient>
             </defs>
-            <circle cx="60" cy="60" r="54" stroke="#5ec3ff" stroke-width="8" fill="url(#aboutIconGradient)" />
-            <text x="60" y="78" text-anchor="middle" font-size="64" fill="#5ec3ff" font-family="'Xolonium', Arial, sans-serif" style="filter: drop-shadow(0 0 8px #5ec3ffcc);">i</text>
+            <circle cx="60" cy="60" r="54" stroke="#5ec3ff" stroke-width="8" fill="url(#contactIconGradient)" />
+            <!-- Email/Contact icon -->
+            <rect x="25" y="35" width="70" height="50" rx="8" ry="8" stroke="#5ec3ff" stroke-width="4" fill="none" />
+            <path d="M25 45 L60 65 L95 45" stroke="#5ec3ff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
       </div>
@@ -130,16 +179,16 @@ I believe in continuous learning and collaboration.`
     </div>
   </div>
 {:else}
-  <div class="about-bg">
+  <div class="contact-bg">
     <video autoplay loop muted playsinline class="background-video">
       <source src="/menu_background.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
-    <div class="about-header">About</div>
+    <div class="contact-header">Contact</div>
     <div class="menu-bar advanced-menu">
       <div class="menu-vertical">
         <div class="menu-list">
-          {#each aboutSections as section, idx}
+          {#each contactSections as section, idx}
             <div
               class="menu-item {selectedSection === idx ? 'selected' : ''}"
               bind:this={menuRefs[idx]}
@@ -153,25 +202,68 @@ I believe in continuous learning and collaboration.`
             </div>
           {/each}
         </div>
-        <div class="menu-content">
-          <div class="section-text">{aboutSections[selectedSection].content}</div>
+                <div class="menu-content">
+          <div class="contact-display">
+            {#if selectedSection === 0}
+              <div class="social-icons">
+                <button class="social-icon" on:click={() => window.location.href = 'mailto:contact.jorgensen@gmail.com'} aria-label="Email">
+                  <svg viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="#5ec3ff" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                  </svg>
+                </button>
+              </div>
+            {:else if selectedSection === 1}
+              <div class="social-icons">
+                <button class="social-icon" on:click={() => window.open('https://linkedin.com/in/logan-jorgensen', '_blank')} aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="#5ec3ff" d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.46 12.92,11.24V10.13H10.13V18.5H12.92V13.57C12.92,12.8 13.54,12.17 14.31,12.17A1.4,1.4 0 0,1 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,5.95 7.81,5.19 6.88,5.19A1.69,1.69 0 0,0 5.19,6.88C5.19,7.81 5.95,8.56 6.88,8.56M8.27,18.5V10.13H5.5V18.5H8.27Z" />
+                  </svg>
+                </button>
+              </div>
+            {:else if selectedSection === 2}
+              <div class="social-icons">
+                <button class="social-icon" on:click={() => window.open('https://github.com/jorgoose', '_blank')} aria-label="GitHub">
+                  <svg viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="#5ec3ff" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+                  </svg>
+                </button>
+              </div>
+            {:else if selectedSection === 3}
+              <div class="social-icons">
+                <svg viewBox="0 0 24 24" width="48" height="48">
+                  <path fill="#5ec3ff" d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22S19,14.25 19,9A7,7 0 0,0 12,2Z" />
+                </svg>
+              </div>
+            {/if}
+            <div class="section-text">
+              {#if contactSections[selectedSection].type === 'email' || contactSections[selectedSection].type === 'link'}
+                <button 
+                  class="contact-link" 
+                  on:click={() => handleContactAction(selectedSection)}
+                  aria-label="Open {contactSections[selectedSection].title}"
+                >
+                  {contactSections[selectedSection].content}
+                </button>
+              {:else}
+                {contactSections[selectedSection].content}
+              {/if}
+            </div>
+          </div>
         </div>
       </div>
-      <div class="about-icon-area">
-        <svg viewBox="0 0 120 120" aria-hidden="true" class="about-icon-svg" style="filter: drop-shadow(0 0 18px #5ec3ff88);">
+      <div class="contact-icon-area">
+        <svg viewBox="0 0 120 120" aria-hidden="true" class="contact-icon-svg" style="filter: drop-shadow(0 0 18px #5ec3ff88);">
           <defs>
-            <radialGradient id="aboutIconGradient" cx="60" cy="60" r="54" gradientUnits="userSpaceOnUse">
+            <radialGradient id="contactIconGradient" cx="60" cy="60" r="54" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#5ec3ff" stop-opacity="0.7" />
               <stop offset="70%" stop-color="#5ec3ff" stop-opacity="0.25" />
               <stop offset="100%" stop-color="#1976d2" stop-opacity="0.18" />
             </radialGradient>
-            <linearGradient id="infoHighlight" x1="60" y1="30" x2="60" y2="90" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#fff" stop-opacity="0.7" />
-              <stop offset="100%" stop-color="#5ec3ff" stop-opacity="0.2" />
-            </linearGradient>
           </defs>
-          <circle cx="60" cy="60" r="54" stroke="#5ec3ff" stroke-width="8" fill="url(#aboutIconGradient)" />
-          <text x="60" y="78" text-anchor="middle" font-size="64" fill="#5ec3ff" font-family="'Xolonium', Arial, sans-serif" style="filter: drop-shadow(0 0 8px #5ec3ffcc);">i</text>
+          <circle cx="60" cy="60" r="54" stroke="#5ec3ff" stroke-width="8" fill="url(#contactIconGradient)" />
+          <!-- Email/Contact icon -->
+          <rect x="25" y="35" width="70" height="50" rx="8" ry="8" stroke="#5ec3ff" stroke-width="4" fill="none" />
+          <path d="M25 45 L60 65 L95 45" stroke="#5ec3ff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
     </div>
@@ -233,35 +325,31 @@ html, body {
   z-index: 2;
 }
 
-.crt-overlay {
+.tv-frame::before {
+  content: '';
   pointer-events: none;
   position: absolute;
   left: 0; top: 0; right: 0; bottom: 0;
-  z-index: 5;
-  border-radius: inherit;
-  mix-blend-mode: lighten;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(0,0,0,0.13) 0px,
-      rgba(0,0,0,0.13) 2px,
-      transparent 3px,
-      transparent 6px
-    ),
-    repeating-linear-gradient(
-      to right,
-      rgba(255,0,0,0.07) 0px, rgba(255,0,0,0.07) 1px,
-      rgba(0,255,0,0.07) 1px, rgba(0,255,0,0.07) 2px,
-      rgba(0,0,255,0.07) 2px, rgba(0,0,255,0.07) 3px
-    ),
-    radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.22) 100%);
-  animation: crt-flicker 1.2s infinite steps(2);
+  border-radius: 2.8rem;
+  background: linear-gradient(120deg, rgba(255,255,255,0.13) 10%, rgba(255,255,255,0.03) 60%, rgba(255,255,255,0.18) 100%);
+  z-index: 2;
 }
 
-@keyframes crt-flicker {
-  0% { opacity: 0.97; }
-  50% { opacity: 1; }
-  100% { opacity: 0.97; }
+.tv-frame::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border-radius: 2.7rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  z-index: 3;
+  mix-blend-mode: lighten;
 }
 
 .tv-stand {
@@ -311,7 +399,7 @@ html, body {
   opacity: 0.7;
 }
 
-.about-bg {
+.contact-bg {
   min-height: 100vh;
   background: transparent;
   display: flex;
@@ -334,7 +422,7 @@ html, body {
   pointer-events: none;
 }
 
-.about-header {
+.contact-header {
   position: relative;
   font-family: 'Xolonium', Arial, sans-serif;
   font-size: clamp(1.5rem, 8vw, 3.8rem);
@@ -375,46 +463,6 @@ html, body {
   overflow: hidden;
 }
 
-.about-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 800px;
-  padding: clamp(1rem, 3vh, 2rem);
-  box-sizing: border-box;
-  z-index: 1;
-}
-
-.about-section {
-  background: rgba(10, 20, 40, 0.85);
-  border: clamp(1px, 0.3vh, 3px) solid #1976d2;
-  border-radius: clamp(8px, 1.5vh, 18px);
-  box-shadow: 0 0 24px #1976d288, 0 0 2px #fff8;
-  padding: clamp(1rem, 3vh, 2rem);
-  margin-bottom: clamp(1rem, 3vh, 2rem);
-  width: 100%;
-  box-sizing: border-box;
-  transition: box-shadow 0.2s, border-color 0.2s;
-}
-
-.about-section:hover {
-  border-color: #5ec3ff;
-  box-shadow: 0 0 32px #5ec3ffcc, 0 0 8px #fff8;
-}
-
-.section-title {
-  font-family: 'Xolonium', Arial, sans-serif;
-  font-size: clamp(1rem, 3vh, 1.8rem);
-  color: #5ec3ff;
-  font-weight: bold;
-  margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
-  text-shadow: 0 0 8px #5ec3ff88;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .section-text {
   font-family: 'Xolonium', Arial, sans-serif;
   font-size: clamp(0.8rem, 2vh, 1.2rem);
@@ -423,6 +471,27 @@ html, body {
   line-height: 1.6;
   text-align: left;
   margin: 0;
+}
+
+.contact-link {
+  background: none;
+  border: none;
+  color: #5ec3ff;
+  font-family: 'Xolonium', Arial, sans-serif;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: color 0.2s, text-decoration-color 0.2s;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+.contact-link:hover, .contact-link:focus {
+  color: #fff;
+  text-decoration-color: #5ec3ff;
+  text-shadow: 0 0 8px #5ec3ff88;
 }
 
 .back-row {
@@ -522,7 +591,7 @@ html, body {
     border-radius: 2px;
   }
   
-  .about-header {
+  .contact-header {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     padding-left: 4%;
@@ -598,7 +667,7 @@ html, body {
     border-radius: 1px;
   }
   
-  .about-header {
+  .contact-header {
     font-size: 2rem;
     margin-left: 6vw;
   }
@@ -606,15 +675,6 @@ html, body {
   .menu-bar {
     padding: clamp(0.5rem, 2vh, 1rem);
     max-width: 100%;
-  }
-  
-  .about-section {
-    padding: clamp(0.5rem, 2vh, 1rem);
-    margin-bottom: clamp(0.5rem, 2vh, 1rem);
-  }
-  
-  .section-title {
-    font-size: clamp(0.8rem, 2.5vh, 1.2rem);
   }
   
   .section-text {
@@ -647,7 +707,7 @@ html, body {
     padding-left: 0.5rem;
   }
   
-  .about-icon-area {
+  .contact-icon-area {
     display: none;
   }
   
@@ -688,12 +748,12 @@ html, body {
     padding: 0.5rem 0 0.5rem 0;
   }
   
-  .about-bg .menu-item {
+  .contact-bg .menu-item {
     font-size: 0.8rem;
     padding: 0.18rem 0.4rem;
   }
   
-  .about-bg .menu-list {
+  .contact-bg .menu-list {
     gap: 0.18rem;
   }
 }
@@ -706,13 +766,7 @@ html, body {
     border-radius: 1.2rem;
   }
   
-  .projects-header {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    padding-left: 4%;
-  }
-  
-  .about-icon-area {
+  .contact-icon-area {
     display: none !important;
   }
 }
@@ -733,6 +787,7 @@ html, body {
   min-height: 320px;
   justify-content: flex-start;
 }
+
 .menu-vertical {
   display: flex;
   flex-direction: column;
@@ -742,7 +797,9 @@ html, body {
   margin-left: 10%;
   padding: 0;
 }
-.menu-list {  display: flex;
+
+.menu-list {  
+  display: flex;
   flex-direction: column;
   align-items: stretch;
   width: 100%;
@@ -754,6 +811,7 @@ html, body {
   box-shadow: none;
   border: none;
 }
+
 .menu-item {
   font-family: 'Xolonium', Arial, sans-serif;
   font-size: 1.35rem;
@@ -773,16 +831,19 @@ html, body {
   text-align: left;
   box-sizing: border-box;
 }
+
 .menu-item.selected, .menu-item:focus {
   background: #0a223a;
   color: #fff;
   border: 2.5px solid #5ec3ff;
   box-shadow: 0 0 8px #5ec3ff88;
 }
+
 .menu-item:active {
   background: #1976d2;
   color: #fff;
 }
+
 .menu-content {
   background: none;
   border-radius: 0;
@@ -803,14 +864,14 @@ html, body {
 }
 
 /* Non-CRT mode: make menu wider */
-:global(.about-bg) .menu-vertical {
+:global(.contact-bg) .menu-vertical {
   max-width: 1000px;
 }
-:global(.about-bg) .menu-list {
+:global(.contact-bg) .menu-list {
   max-width: 100%;
 }
 
-.about-icon-area {
+.contact-icon-area {
   flex: 1 1 0;
   display: flex;
   align-items: center;
@@ -820,7 +881,8 @@ html, body {
   overflow: hidden;
   margin: auto;
 }
-.about-icon-svg {
+
+.contact-icon-svg {
   width: 80%;
   max-width: 240px;
   height: auto;
@@ -833,11 +895,11 @@ body > :last-child {
   margin-bottom: 0 !important;
 }
 
-/* CRT mode containment for About page */
+/* CRT mode containment for Contact page */
 .tv-frame .menu-bar,
 .tv-frame .advanced-menu,
 .tv-frame .menu-vertical,
-.tv-frame .about-icon-area {
+.tv-frame .contact-icon-area {
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -845,7 +907,82 @@ body > :last-child {
   padding: 0;
   box-sizing: border-box;
 }
+
 .tv-frame .menu-vertical {
   padding-left: 2rem;
 }
-</style> 
+
+.contact-display {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.social-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-icon:hover {
+  background: rgba(94, 195, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.social-icon:focus {
+  outline: 2px solid #5ec3ff;
+  outline-offset: 2px;
+}
+
+.social-icon svg {
+  filter: drop-shadow(0 0 8px #5ec3ff88);
+  transition: filter 0.2s;
+}
+
+.social-icon:hover svg {
+  filter: drop-shadow(0 0 12px #5ec3ffcc);
+}
+
+@media (max-width: 700px) {
+  .contact-display {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .social-icons {
+    gap: 0.5rem;
+  }
+  
+  .social-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .tv-frame .social-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .tv-frame .contact-display {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+</style>
