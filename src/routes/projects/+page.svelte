@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   const projects = [
-    { title: 'Project 1', image: 'https://picsum.photos/400/250?random=1', description: 'Description for Project 1.' },
-    { title: 'Project 2', image: 'https://picsum.photos/400/250?random=2', description: 'Description for Project 2.' },
-    { title: 'Project 3', image: 'https://picsum.photos/400/250?random=3', description: 'Description for Project 3.' },
-    { title: 'Project 4', image: 'https://picsum.photos/400/250?random=4', description: 'Description for Project 4.' },
-    { title: 'Project 5', image: 'https://picsum.photos/400/250?random=5', description: 'Description for Project 5.' },
+    { title: 'Hachiko', image: 'https://picsum.photos/400/250?random=1', description: 'Developer-friendly platform making Japanese financial data accessible through clean APIs. Transforms complex FSA disclosures into structured data. Built with SvelteKit, Rust, and Go.' },
+    { title: 'EveryNetNet', image: 'https://picsum.photos/400/250?random=2', description: 'Investment research service for investors in net-net companies (trading below net current asset value). Helps investors and investment firms filter and access data about undervalued companies to make informed investment decisions. Built with Next.js, Go, Google Cloud Platform, and Stripe API.' },
+    { title: 'Frogstagram', image: 'https://picsum.photos/400/250?random=3', description: 'Instagram-inspired platform with a twist: only allows frog photos. Uses AWS services and computer vision to automatically filter uploads, ensuring only frog images make it to the feed. Built with Python, FastAPI, AWS, SvelteKit, Tailwind CSS, and Docker.' },
+    { title: 'Marketmon', image: 'https://picsum.photos/400/250?random=4', description: 'Web-based trading card game that combines the excitement of battling monsters with real-time financial data from S&P 500 companies. Offers an engaging and educational experience in finance and investing. Built with Svelte, TypeScript, Tailwind CSS, Python, Claude API, and Stability API.' },
+    { title: 'Pokemon Image Classifier', image: 'https://picsum.photos/400/250?random=5', description: 'Training an image classification model to identify images of Pokémon. Built with TensorFlow, Keras, and Python.' },
     { title: 'Project 6', image: 'https://picsum.photos/400/250?random=6', description: 'Description for Project 6.' }
   ];
   let start = 0;
