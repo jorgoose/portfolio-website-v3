@@ -6,35 +6,40 @@
   const skillCategories = [
     {
       title: 'Languages',
-      skills: ['JavaScript', 'TypeScript', 'Python', 'C++', 'Rust'],
+      skills: ['Go', 'Python', 'JavaScript', 'TypeScript', 'SQL', 'Java', 'PHP'],
       blurbs: [
-        'I use JavaScript daily for web development, both frontend and backend.',
-        'TypeScript is my go-to for type-safe, scalable JS projects.',
-        'I use Python for scripting, automation, and data analysis.',
-        'C++ for high-performance and systems programming tasks.',
-        'Rust for safe, modern systems programming and CLI tools.'
+        'Go for building fast, concurrent backend services and APIs.',
+        'Python for data analysis, machine learning, and backend development.',
+        'JavaScript for dynamic web applications and full-stack development.',
+        'TypeScript for type-safe, scalable JavaScript applications.',
+        'SQL for database design, queries, and data management.',
+        'Java for enterprise applications and Android development.',
+        'PHP for web development and server-side scripting.'
       ]
     },
     {
-      title: 'Frameworks',
-      skills: ['Svelte', 'React', 'Vue', 'Node.js', 'Express'],
+      title: 'Libraries',
+      skills: ['FastAPI', 'Gin', 'Svelte', 'Next.js', 'React', 'PyTorch', 'OpenCV'],
       blurbs: [
-        'Svelte is my favorite for fast, modern, reactive UIs.',
-        'React for large-scale, component-driven web apps.',
-        'Vue for approachable, flexible frontend projects.',
-        'Node.js for building scalable backend APIs and tools.',
-        'Express for rapid prototyping and RESTful APIs.'
+        'FastAPI for building high-performance Python APIs with automatic documentation.',
+        'Gin for creating fast, minimalist web services in Go.',
+        'Svelte for building reactive, performant user interfaces.',
+        'Next.js for full-stack React applications with SSR and routing.',
+        'React for building component-based user interfaces.',
+        'PyTorch for deep learning and neural network development.',
+        'OpenCV for computer vision and image processing tasks.'
       ]
     },
     {
       title: 'Tools',
-      skills: ['Git', 'Docker', 'Webpack', 'Vite', 'ESLint'],
+      skills: ['AWS', 'GCP', 'Docker', 'Git', 'Snowflake', 'PostgreSQL'],
       blurbs: [
-        'Git for version control and collaborative workflows.',
-        'Docker for containerized, reproducible dev environments.',
-        'Webpack for advanced JS bundling and asset management.',
-        'Vite for lightning-fast dev and build tooling.',
-        'ESLint for code quality and consistent style.'
+        'AWS for cloud infrastructure, serverless computing, and scalable deployments.',
+        'Google Cloud Platform for cloud services, ML APIs, and data analytics.',
+        'Docker for containerization and consistent deployment environments.',
+        'Git for version control, collaboration, and code management.',
+        'Snowflake for cloud data warehousing and analytics.',
+        'PostgreSQL for relational database design and management.'
       ]
     }
   ];
