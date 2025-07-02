@@ -6,7 +6,7 @@
     { title: 'Frogstagram', image: 'https://picsum.photos/400/250?random=3', description: 'Instagram-inspired platform with a twist: only allows frog photos. Uses AWS services and computer vision to automatically filter uploads, ensuring only frog images make it to the feed. Built with Python, FastAPI, AWS, SvelteKit, Tailwind CSS, and Docker.' },
     { title: 'Marketmon', image: 'https://picsum.photos/400/250?random=4', description: 'Web-based trading card game that combines the excitement of battling monsters with real-time financial data from S&P 500 companies. Offers an engaging and educational experience in finance and investing. Built with Svelte, TypeScript, Tailwind CSS, Python, Claude API, and Stability API.' },
     { title: 'Pokemon Image Classifier', image: 'https://picsum.photos/400/250?random=5', description: 'Training an image classification model to identify images of Pokémon. Built with TensorFlow, Keras, and Python.' },
-    { title: 'Project 6', image: 'https://picsum.photos/400/250?random=6', description: 'Description for Project 6.' }
+    { title: 'FinTeach', image: 'https://picsum.photos/400/250?random=6', description: 'FinTeach is an engaging educational app designed to make financial learning accessible and fun for young students. Built with Dart, Flutter, and OpenAI API.' }
   ];
   let start = 0;
   let visibleCount = 3;
