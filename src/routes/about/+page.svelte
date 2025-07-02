@@ -75,57 +75,59 @@ I believe in continuous learning and collaboration.`
 </script>
 
 {#if crtMode}
-  <div class="tv-frame">
-    <div class="crt-overlay"></div>
-    <video autoplay loop muted playsinline class="background-video">
-      <source src="/menu_background.webm" type="video/webm" />
-      Your browser does not support the video tag.
-    </video>
-    <div class="about-header">About</div>
-    <div class="menu-bar advanced-menu">
-      <div class="menu-vertical">
-        <div class="menu-list">
-          {#each aboutSections as section, idx}
-            <div
-              class="menu-item {selectedSection === idx ? 'selected' : ''}"
-              bind:this={menuRefs[idx]}
-              tabindex="0"
-              role="button"
-              aria-selected={selectedSection === idx}
-              on:click={() => selectSection(idx)}
-              on:keydown={handleKeyDown}
-              >
-              {section.title}
-            </div>
-          {/each}
+  <div class="crt-background">
+    <div class="tv-frame">
+      <div class="crt-overlay"></div>
+      <video autoplay loop muted playsinline class="background-video">
+        <source src="/menu_background.webm" type="video/webm" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="about-header">About</div>
+      <div class="menu-bar advanced-menu">
+        <div class="menu-vertical">
+          <div class="menu-list">
+            {#each aboutSections as section, idx}
+              <div
+                class="menu-item {selectedSection === idx ? 'selected' : ''}"
+                bind:this={menuRefs[idx]}
+                tabindex="0"
+                role="button"
+                aria-selected={selectedSection === idx}
+                on:click={() => selectSection(idx)}
+                on:keydown={handleKeyDown}
+                >
+                {section.title}
+              </div>
+            {/each}
+          </div>
+          <div class="menu-content">
+            <div class="section-text">{aboutSections[selectedSection].content}</div>
+          </div>
         </div>
-        <div class="menu-content">
-          <div class="section-text">{aboutSections[selectedSection].content}</div>
+        <div class="about-icon-area">
+          <svg viewBox="0 0 120 120" aria-hidden="true" class="about-icon-svg" style="filter: drop-shadow(0 0 18px #5ec3ff88);">
+            <defs>
+              <radialGradient id="aboutIconGradient" cx="60" cy="60" r="54" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#5ec3ff" stop-opacity="0.7" />
+                <stop offset="70%" stop-color="#5ec3ff" stop-opacity="0.25" />
+                <stop offset="100%" stop-color="#1976d2" stop-opacity="0.18" />
+              </radialGradient>
+              <linearGradient id="infoHighlight" x1="60" y1="30" x2="60" y2="90" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fff" stop-opacity="0.7" />
+                <stop offset="100%" stop-color="#5ec3ff" stop-opacity="0.2" />
+              </linearGradient>
+            </defs>
+            <circle cx="60" cy="60" r="54" stroke="#5ec3ff" stroke-width="8" fill="url(#aboutIconGradient)" />
+            <text x="60" y="78" text-anchor="middle" font-size="64" fill="#5ec3ff" font-family="'Xolonium', Arial, sans-serif" style="filter: drop-shadow(0 0 8px #5ec3ffcc);">i</text>
+          </svg>
         </div>
       </div>
-      <div class="about-icon-area">
-        <svg viewBox="0 0 120 120" aria-hidden="true" class="about-icon-svg" style="filter: drop-shadow(0 0 18px #5ec3ff88);">
-          <defs>
-            <radialGradient id="aboutIconGradient" cx="60" cy="60" r="54" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#5ec3ff" stop-opacity="0.7" />
-              <stop offset="70%" stop-color="#5ec3ff" stop-opacity="0.25" />
-              <stop offset="100%" stop-color="#1976d2" stop-opacity="0.18" />
-            </radialGradient>
-            <linearGradient id="infoHighlight" x1="60" y1="30" x2="60" y2="90" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#fff" stop-opacity="0.7" />
-              <stop offset="100%" stop-color="#5ec3ff" stop-opacity="0.2" />
-            </linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="54" stroke="#5ec3ff" stroke-width="8" fill="url(#aboutIconGradient)" />
-          <text x="60" y="78" text-anchor="middle" font-size="64" fill="#5ec3ff" font-family="'Xolonium', Arial, sans-serif" style="filter: drop-shadow(0 0 8px #5ec3ffcc);">i</text>
-        </svg>
+      <div class="back-row">
+        <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
       </div>
+      <div class="tv-stand"></div>
+      <div class="tv-base"></div>
     </div>
-    <div class="back-row">
-      <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
-    </div>
-    <div class="tv-stand"></div>
-    <div class="tv-base"></div>
   </div>
 {:else}
   <div class="about-bg">
@@ -191,6 +193,20 @@ html, body {
   background-repeat: repeat;
 }
 
+.crt-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/CRT_bg.jpeg') 44% 54% no-repeat;
+  background-size: 124%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .tv-frame {
   position: absolute;
   top: 50%;
@@ -214,7 +230,7 @@ html, body {
   align-items: stretch;
   justify-content: flex-start;
   box-sizing: border-box;
-  z-index: 10;
+  z-index: 2;
 }
 
 .tv-frame::before {
@@ -334,7 +350,7 @@ html, body {
 }
 
 .menu-bar {
-  width: 100vw;
+  width: 100%;
   height: 0;
   flex: 1;
   min-height: 0;
@@ -513,6 +529,11 @@ html, body {
   html, body {
     max-width: 100vw;
     overflow-x: hidden;
+  }
+  
+  .crt-background {
+    background: url('/CRT_bg.jpeg') 47.5% 55% no-repeat;
+    background-size: 275%;
   }
   
   .tv-frame {
