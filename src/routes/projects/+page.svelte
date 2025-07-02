@@ -142,44 +142,46 @@
 
 
 {#if crtMode}
-  <div class="tv-frame">
-    <div class="crt-overlay"></div>
-    <video autoplay loop muted playsinline class="background-video">
-      <source src="/menu_background.webm" type="video/webm" />
-      Your browser does not support the video tag.
-    </video>
-    <div class="projects-header">Projects</div>
-    <div class="menu-bar">
-      <button class="arrow left" on:click={prev} aria-label="Previous Projects" disabled={start === 0}>
-        <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="32,0 13,60 32,120" fill="#5ec3ff"/>
-          <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
-        </svg>
-      </button>
-      <div class="level-select-row" bind:this={levelSelectRow}>
-        {#each visibleProjects as project, i}
-          <div class="level-card {selected === i ? 'selected' : ''}">
-            <div class="level-img-wrapper">
-              <img src={project.image} alt={project.title} class="level-img" />
+  <div class="crt-background">
+    <div class="tv-frame">
+      <div class="crt-overlay"></div>
+      <video autoplay loop muted playsinline class="background-video">
+        <source src="/menu_background.webm" type="video/webm" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="projects-header">Projects</div>
+      <div class="menu-bar">
+        <button class="arrow left" on:click={prev} aria-label="Previous Projects" disabled={start === 0}>
+          <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="32,0 13,60 32,120" fill="#5ec3ff"/>
+            <polygon points="30,6 17,60 30,114" fill="#1976d2"/>
+          </svg>
+        </button>
+        <div class="level-select-row" bind:this={levelSelectRow}>
+          {#each visibleProjects as project, i}
+            <div class="level-card {selected === i ? 'selected' : ''}">
+              <div class="level-img-wrapper">
+                <img src={project.image} alt={project.title} class="level-img" />
+              </div>
+              <div class="level-title">{project.title}</div>
+              <div class="level-desc">{project.description}</div>
             </div>
-            <div class="level-title">{project.title}</div>
-            <div class="level-desc">{project.description}</div>
-          </div>
-        {/each}
+          {/each}
+        </div>
+        <button class="arrow right" on:click={next} aria-label="Next Projects" disabled={start + visibleCount >= projects.length}>
+          <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="0,0 19,60 0,120" fill="#5ec3ff"/>
+            <polygon points="2,6 15,60 2,114" fill="#1976d2"/>
+          </svg>
+        </button>
       </div>
-      <button class="arrow right" on:click={next} aria-label="Next Projects" disabled={start + visibleCount >= projects.length}>
-        <svg viewBox="0 0 32 120" class="arrow-svg" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="0,0 19,60 0,120" fill="#5ec3ff"/>
-          <polygon points="2,6 15,60 2,114" fill="#1976d2"/>
-        </svg>
-      </button>
+      <div class="back-row">
+        <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
+        <div class="select-label">= SELECT</div>
+      </div>
+      <div class="tv-stand"></div>
+      <div class="tv-base"></div>
     </div>
-    <div class="back-row">
-      <div class="back-label interactive" tabindex="0" role="button" aria-label="Back" on:click={() => history.back()}>= BACK</div>
-      <div class="select-label">= SELECT</div>
-    </div>
-    <div class="tv-stand"></div>
-    <div class="tv-base"></div>
   </div>
 {:else}
   <!-- fallback: render the normal layout, or just the CRT layout always if you prefer -->
@@ -222,8 +224,6 @@
 {/if}
 
 <style>
-
-
 body {
   min-height: 100vh;
   background: radial-gradient(ellipse at center, #222 60%, #111 100%) fixed, url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23111111"/><circle cx="50" cy="50" r="40" fill="%23222222" fill-opacity="0.08"/></svg>');
@@ -231,6 +231,19 @@ body {
   background-size: cover;
   background-repeat: repeat;
   overflow-x: hidden;
+}
+.crt-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/CRT_bg.jpeg') 44% 54% no-repeat;
+  background-size: 124%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .tv-frame {
   position: absolute;
@@ -359,6 +372,10 @@ body {
     max-width: 100vw;
     overflow-x: hidden;
   }
+  .crt-background {
+    background: url('/CRT_bg.jpeg') 47.5% 55% no-repeat;
+    background-size: 275%;
+  }
   .tv-frame {
     width: 100vw;
     max-width: 100vw;
@@ -432,12 +449,12 @@ body {
     flex-direction: column;
     width: 100%;
     height: auto;
-    min-height: 0;
-    flex: none;
-    padding: clamp(0.3rem, 1vh, 0.5rem) 0;
-    overflow: hidden;
-    overflow-y: hidden;
-    justify-content: left;
+    min-height: 200px;
+    flex: 1 1 auto;
+    padding: clamp(0.5rem, 2vh, 1rem) 0;
+    overflow: visible;
+    justify-content: flex-start;
+    align-items: stretch;
   }
 
   .level-select-row {
@@ -445,8 +462,9 @@ body {
     flex-direction: row;
     gap: clamp(0.5rem, 2vw, 1rem);
     width: 100%;
-    padding: 0;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
     height: auto;
+    min-height: 150px;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -454,16 +472,18 @@ body {
     align-items: stretch;
     justify-content: flex-start;
     box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
   }
 
   .level-card {
-    width: clamp(200px, 80%, 300px);
-    max-width: 30%;
-    min-width: 0;
-    height: 100%;
+    width: clamp(180px, 70vw, 280px);
+    min-width: 180px;
+    max-width: 280px;
+    height: auto;
+    min-height: 120px;
     margin: 0;
     scroll-snap-align: start;
-    flex: 1 1 0;
+    flex: 0 0 auto;
     font-size: clamp(0.4rem, 1.5vh, 0.8rem);
     padding: clamp(0.2em, 1vh, 0.4em) clamp(0.3em, 1vh, 0.5em) clamp(0.3em, 1vh, 0.5em);
     display: flex;
@@ -473,6 +493,10 @@ body {
     margin-top: 0.2em;
     margin-bottom: 0.2em;
     box-sizing: border-box;
+    background: rgba(10, 20, 40, 0.95);
+    border: clamp(1px, 0.3vh, 3px) solid #1976d2;
+    border-radius: clamp(8px, 1.5vh, 18px);
+    box-shadow: 0 0 24px #1976d288, 0 0 2px #fff8;
   }
   
   .level-card:first-child {
@@ -486,21 +510,20 @@ body {
   .level-img-wrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
-    height: auto;
-    min-height: 0;
-    border-radius: clamp(0.3em, 1vh, 0.6em);
+    border-radius: clamp(4px, 1vh, 10px);
     overflow: hidden;
-    margin-bottom: clamp(0.1em, 0.5vh, 0.3em);
-    border: clamp(0.05em, 0.1vh, 0.15em) solid #5ec3ff44;
+    margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
+    border: clamp(1px, 0.2vh, 2px) solid #5ec3ff44;
     background: #111;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1 1 auto;
+    flex-shrink: 1;
+    min-height: 0;
   }
   .level-img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
     display: block;
   }
