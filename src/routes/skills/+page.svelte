@@ -184,8 +184,8 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('/CRT_bg.jpeg') center 45% no-repeat;
-  background-size: 168%;
+  background: url('/CRT_bg.jpeg') 44% 54% no-repeat;
+  background-size: 124%;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -319,8 +319,8 @@ body {
     overflow-x: hidden;
   }
   .crt-background {
-    background: url('/CRT_bg.jpeg') center 44% no-repeat;
-    background-size: 332%; /* Double the desktop zoom of 168% */
+    background: url('/CRT_bg.jpeg') 47.5% 55% no-repeat;
+    background-size: 275%;
   }
   .tv-frame {
     width: 100vw;
