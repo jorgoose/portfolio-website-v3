@@ -128,9 +128,14 @@ function toggleRadio() {
     // Stop audio and collapse
     radioExpanded = false;
     stopVisualization();
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    }
     if (audioContext) {
       audioContext.close();
     }
+    currentSpeaker = 'chief'; // Reset to default
   }
 }
 
@@ -420,7 +425,7 @@ onMount(() => {
   </div>
 {:else}
   <div class="halo-bg">
-    <video autoplay loop muted playsinline preload="metadata" class="background-video" on:loadeddata={handleVideoLoad} on:error={() => videoAutoplayFailed = true}>
+    <video autoplay loop muted playsinline preload="metadata" class="background-video" on:loadeddata={handleVideoLoad} on:error={() => {if (!hasCheckedAutoplay) {hasCheckedAutoplay = true; videoAutoplayFailed = true;}}}>
       <source src="/menu_background.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
