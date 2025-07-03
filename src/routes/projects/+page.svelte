@@ -1,12 +1,23 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  
+  // Radio widget variables
+  let radioExpanded = false;
+  let audioContext: AudioContext;
+  let analyser: AnalyserNode;
+  let audioSource: MediaElementAudioSourceNode;
+  let animationId: number;
+  let currentSpeaker = 'cortana'; // 'chief' or 'cortana' - starts with Cortana
+  let audioElement: HTMLAudioElement;
+  let fadeOpacity = 1; // For smooth transitions
+  let isTransitioning = false;
   const projects = [
-    { title: 'Hachiko', image: 'https://picsum.photos/400/250?random=1', description: 'Developer-friendly platform making Japanese financial data accessible through clean APIs. Transforms complex FSA disclosures into structured data. Built with SvelteKit, Rust, and Go.' },
-    { title: 'EveryNetNet', image: 'https://picsum.photos/400/250?random=2', description: 'Investment research service for investors in net-net companies (trading below net current asset value). Helps investors and investment firms filter and access data about undervalued companies to make informed investment decisions. Built with Next.js, Go, Google Cloud Platform, and Stripe API.' },
-    { title: 'Frogstagram', image: 'https://picsum.photos/400/250?random=3', description: 'Instagram-inspired platform with a twist: only allows frog photos. Uses AWS services and computer vision to automatically filter uploads, ensuring only frog images make it to the feed. Built with Python, FastAPI, AWS, SvelteKit, Tailwind CSS, and Docker.' },
-    { title: 'Marketmon', image: 'https://picsum.photos/400/250?random=4', description: 'Web-based trading card game that combines the excitement of battling monsters with real-time financial data from S&P 500 companies. Offers an engaging and educational experience in finance and investing. Built with Svelte, TypeScript, Tailwind CSS, Python, Claude API, and Stability API.' },
-    { title: 'Pokemon Image Classifier', image: 'https://picsum.photos/400/250?random=5', description: 'Training an image classification model to identify images of Pokémon. Built with TensorFlow, Keras, and Python.' },
-    { title: 'FinTeach', image: 'https://picsum.photos/400/250?random=6', description: 'FinTeach is an engaging educational app designed to make financial learning accessible and fun for young students. Built with Dart, Flutter, and OpenAI API.' }
+    { title: 'Hachiko', image: '/projects/hachiko-logo.jpg', description: 'Developer-friendly platform making Japanese financial data accessible through clean APIs. Transforms complex FSA disclosures into structured data. Built with SvelteKit, Rust, and Go.' },
+    { title: 'EveryNetNet', image: '/projects/everynetnet-logo.jpg', description: 'Investment research service for investors in net-net companies (trading below net current asset value). Helps investors and investment firms filter and access data about undervalued companies to make informed investment decisions. Built with Next.js, Go, Google Cloud Platform, and Stripe API.' },
+    { title: 'Frogstagram', image: '/projects/frogstagrame.jpg', description: 'Instagram-inspired platform with a twist: only allows frog photos. Uses AWS services and computer vision to automatically filter uploads, ensuring only frog images make it to the feed. Built with Python, FastAPI, AWS, SvelteKit, Tailwind CSS, and Docker.' },
+    { title: 'Marketmon', image: '/projects/marketmon.png', description: 'Web-based trading card game that combines the excitement of battling monsters with real-time financial data from S&P 500 companies. Offers an engaging and educational experience in finance and investing. Built with Svelte, TypeScript, Tailwind CSS, Python, Claude API, and Stability API.' },
+    { title: 'Pokemon Image Classifier', image: '/projects/pkmn.jpeg', description: 'Training an image classification model to identify images of Pokémon. Built with TensorFlow, Keras, and Python.' },
+    { title: 'FinTeach', image: '/projects/finteach.jpg', description: 'FinTeach is an engaging educational app designed to make financial learning accessible and fun for young students. Built with Dart, Flutter, and OpenAI API.' }
   ];
   let start = 0;
   let visibleCount = 3;
@@ -28,6 +39,220 @@
     if (start + visibleCount < projects.length) start += 1;
   }
   
+  // Radio widget functions
+  function toggleRadio() {
+    if (!radioExpanded) {
+      // Reset to starting speaker for new audio session
+      currentSpeaker = 'cortana';
+      fadeOpacity = 1;
+      
+      // Start playing audio and expand
+      audioElement = new Audio('/audio/projects_cortana_and_chief.mp3');
+      
+      // Initialize audio context for visualization
+      audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      // Resume audio context if suspended
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.8;
+      
+      audioSource = audioContext.createMediaElementSource(audioElement);
+      audioSource.connect(analyser);
+      analyser.connect(audioContext.destination);
+      
+      // Start playing
+      audioElement.play().then(() => {
+        radioExpanded = true;
+        console.log('Audio started, starting visualization...');
+        startVisualization();
+        startSpeakerTracking();
+      }).catch(error => {
+        console.log('Audio play failed:', error);
+      });
+      
+      // Listen for audio end
+      audioElement.addEventListener('ended', () => {
+        radioExpanded = false;
+        stopVisualization();
+        // Don't reset currentSpeaker immediately - let it maintain state during collapse
+        // It will reset when the widget is clicked again
+      });
+    } else {
+      // Stop audio and collapse
+      radioExpanded = false;
+      stopVisualization();
+      if (audioContext) {
+        audioContext.close();
+      }
+    }
+  }
+
+  function startVisualization() {
+    const canvas = document.getElementById('waveform-canvas') as HTMLCanvasElement;
+    if (!canvas) {
+      console.log('Canvas not found!');
+      return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.log('Canvas context not available!');
+      return;
+    }
+    
+    console.log('Starting visualization with canvas:', canvas.width, 'x', canvas.height);
+    
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    
+    function draw() {
+      animationId = requestAnimationFrame(draw);
+      
+      analyser.getByteFrequencyData(dataArray);
+      
+      // Clear canvas
+      ctx!.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const widgetRadius = canvas.width / 2 - 2; // Radius of the radio widget (accounting for border)
+      const maxBarLength = 20; // Maximum length of audio bars extending inward
+      const numBars = 128; // Doubled number of audio bars for even smoother appearance
+      const barWidth = 1; // Thinner bars to accommodate more bars
+      
+      // Draw audio bars around the inside edge of the circle, extending inward
+      for (let i = 0; i < numBars; i++) {
+        const angle = (i / numBars) * 2 * Math.PI;
+        
+        // Use only half the spectrum and mirror it
+        const halfBars = numBars / 2;
+        let dataIndex;
+        if (i < halfBars) {
+          // First half: use first half of audio spectrum
+          dataIndex = Math.floor((i / halfBars) * (bufferLength / 2));
+        } else {
+          // Second half: mirror the first half
+          const mirrorIndex = numBars - 1 - i;
+          dataIndex = Math.floor((mirrorIndex / halfBars) * (bufferLength / 2));
+        }
+        
+        const amplitude = (dataArray[dataIndex] / 255) * maxBarLength;
+        
+        // Ensure minimum bar length for visibility
+        const minAmplitude = 3;
+        const finalAmplitude = Math.max(amplitude, minAmplitude);
+        
+        // Calculate bar start and end positions
+        // Start at the edge of the widget, extend inward toward center
+        const startX = centerX + widgetRadius * Math.cos(angle);
+        const startY = centerY + widgetRadius * Math.sin(angle);
+        const endX = centerX + (widgetRadius - finalAmplitude) * Math.cos(angle);
+        const endY = centerY + (widgetRadius - finalAmplitude) * Math.sin(angle);
+        
+        // Draw the bar
+        ctx!.beginPath();
+        ctx!.strokeStyle = '#5ec3ff88'; // Faded blue to match Halo theme
+        ctx!.lineWidth = barWidth;
+        ctx!.lineCap = 'round';
+        ctx!.moveTo(startX, startY);
+        ctx!.lineTo(endX, endY);
+        ctx!.stroke();
+      }
+    }
+    
+    draw();
+  }
+
+  function stopVisualization() {
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+    }
+  }
+
+  function startSpeakerTracking() {
+    if (!audioElement) return;
+    
+    function updateSpeaker() {
+      const currentTime = audioElement.currentTime;
+      
+      // Timing based on the projects audio file
+      if (currentTime >= 0 && currentTime < 20) {
+        // 0:00 - 0:20 Cortana
+        if (currentSpeaker !== 'cortana' && !isTransitioning) {
+          transitionToSpeaker('cortana');
+        }
+      } else if (currentTime >= 20 && currentTime < 23) {
+        // 0:20 - 0:23 Chief
+        if (currentSpeaker !== 'chief' && !isTransitioning) {
+          transitionToSpeaker('chief');
+        }
+      } else if (currentTime >= 23 && currentTime < 36) {
+        // 0:23 - 0:36 Cortana
+        if (currentSpeaker !== 'cortana' && !isTransitioning) {
+          transitionToSpeaker('cortana');
+        }
+      } else if (currentTime >= 36) {
+        // 0:36 - End Chief
+        if (currentSpeaker !== 'chief' && !isTransitioning) {
+          transitionToSpeaker('chief');
+        }
+      }
+    }
+    
+    // Update speaker every 100ms
+    const speakerInterval = setInterval(updateSpeaker, 100);
+    
+    // Clean up interval when audio ends
+    audioElement.addEventListener('ended', () => {
+      clearInterval(speakerInterval);
+    });
+  }
+
+  function transitionToSpeaker(newSpeaker: string) {
+    if (isTransitioning || currentSpeaker === newSpeaker) return;
+    
+    isTransitioning = true;
+    
+    // Fade out current image
+    const fadeOutDuration = 200; // 200ms fade out
+    const fadeOutSteps = 20;
+    const fadeOutInterval = fadeOutDuration / fadeOutSteps;
+    
+    let fadeOutStep = 0;
+    const fadeOutTimer = setInterval(() => {
+      fadeOutStep++;
+      fadeOpacity = 1 - (fadeOutStep / fadeOutSteps);
+      
+      if (fadeOutStep >= fadeOutSteps) {
+        clearInterval(fadeOutTimer);
+        
+        // Switch speaker
+        currentSpeaker = newSpeaker;
+        
+        // Fade in new image
+        const fadeInDuration = 200; // 200ms fade in
+        const fadeInSteps = 20;
+        const fadeInInterval = fadeInDuration / fadeInSteps;
+        
+        let fadeInStep = 0;
+        const fadeInTimer = setInterval(() => {
+          fadeInStep++;
+          fadeOpacity = fadeInStep / fadeInSteps;
+          
+          if (fadeInStep >= fadeInSteps) {
+            clearInterval(fadeInTimer);
+            fadeOpacity = 1;
+            isTransitioning = false;
+          }
+        }, fadeInInterval);
+      }
+    }, fadeOutInterval);
+  }
 
   
   $: visibleProjects = isMobile ? projects : projects.slice(start, start + visibleCount);
@@ -222,6 +447,37 @@
     </div>
   </div>
 {/if}
+
+<!-- Radio Widget -->
+<div class="radio-widget {radioExpanded ? 'expanded' : ''}" role="button" tabindex="0" aria-label="Radio to Master Chief and Cortana" on:click={toggleRadio}>
+  <svg class="radio-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Walkie-talkie body -->
+    <rect x="6" y="4" width="12" height="16" rx="2" fill="#5ec3ff"/>
+    <!-- Antenna -->
+    <line x1="12" y1="4" x2="12" y2="2" stroke="#5ec3ff" stroke-width="2" stroke-linecap="round"/>
+    <!-- Speaker grille -->
+    <circle cx="12" cy="8" r="2" fill="#1976d2"/>
+    <circle cx="12" cy="8" r="1" fill="#5ec3ff"/>
+    <!-- Control buttons -->
+    <rect x="9" y="12" width="2" height="2" rx="0.5" fill="#1976d2"/>
+    <rect x="13" y="12" width="2" height="2" rx="0.5" fill="#1976d2"/>
+    <!-- LED indicator -->
+    <circle cx="12" cy="16" r="0.5" fill="#00ff88"/>
+    <!-- Side grip -->
+    <rect x="5" y="6" width="1" height="12" rx="0.5" fill="#1976d2"/>
+    <rect x="18" y="6" width="1" height="12" rx="0.5" fill="#1976d2"/>
+  </svg>
+  <div class="radio-pulse" class:hidden={radioExpanded}></div>
+  
+  <!-- Speaker Profile -->
+  <div class="speaker-profile">
+    <img src={currentSpeaker === 'chief' ? '/master_chief.webp' : '/cortana.webp'} 
+         alt={currentSpeaker === 'chief' ? 'Master Chief' : 'Cortana'} 
+         class="speaker-image"
+         style="opacity: {fadeOpacity};" />
+    <canvas id="waveform-canvas" class="waveform-canvas" width="120" height="120"></canvas>
+  </div>
+</div>
 
 <style>
 body {
@@ -641,6 +897,7 @@ body {
   max-width: none;
   height: 100%;
   max-height: none;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -692,7 +949,7 @@ body {
   opacity: 0.85;
   margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
   text-align: left;
-  flex-shrink: 1;
+  flex: 1;
   min-height: 0;
 }
 .arrow {
@@ -875,6 +1132,175 @@ body {
 }
 .arrow.right {
   margin-right: clamp(1rem, 6vw, 3rem);
+}
+
+/* Radio Widget */
+.radio-widget {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #5ec3ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.5s ease;
+  backdrop-filter: blur(10px);
+  overflow: visible;
+  transform-origin: left center;
+}
+
+.radio-widget.expanded {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  justify-content: center;
+  padding: 0;
+}
+
+.radio-widget.expanded .radio-icon {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.radio-widget:hover {
+  transform: scale(1.1);
+  border-color: #fff;
+}
+
+.radio-widget:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.radio-icon {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 0 8px #5ec3ff88);
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.radio-widget:hover .radio-icon {
+  filter: drop-shadow(0 0 12px #5ec3ffcc);
+}
+
+.radio-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 60px;
+  border: 2px solid #5ec3ff;
+  border-radius: 50%;
+  animation: radio-pulse 2s infinite;
+  opacity: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.radio-pulse.hidden {
+  display: none;
+}
+
+@keyframes radio-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.speaker-profile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.radio-widget.expanded .speaker-profile {
+  opacity: 1;
+}
+
+.speaker-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+}
+
+.waveform-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: transparent;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Mobile responsive for radio widget */
+@media (max-width: 768px) {
+  .radio-widget {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .radio-widget.expanded {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .radio-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  /* Adjust pulse animation for mobile */
+  .radio-pulse {
+    border-width: 1px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+  
+  @keyframes radio-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.3);
+      opacity: 0;
+    }
+  }
 }
 </style>
 
