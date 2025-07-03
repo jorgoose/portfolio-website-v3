@@ -705,7 +705,7 @@ body {
     flex-direction: column;
     width: 100%;
     height: auto;
-    min-height: 200px;
+    min-height: 320px;
     flex: 1 1 auto;
     padding: clamp(0.5rem, 2vh, 1rem) 0;
     overflow: visible;
@@ -720,7 +720,7 @@ body {
     width: 100%;
     padding: 0 clamp(0.5rem, 2vw, 1rem);
     height: auto;
-    min-height: 150px;
+    min-height: 270px;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -736,7 +736,7 @@ body {
     min-width: 180px;
     max-width: 280px;
     height: auto;
-    min-height: 120px;
+    min-height: 240px;
     margin: 0;
     scroll-snap-align: start;
     flex: 0 0 auto;
@@ -796,7 +796,18 @@ body {
     text-overflow: ellipsis;
   }
   .level-desc {
-    display: none;
+    font-family: 'Xolonium', Arial, sans-serif;
+    font-size: clamp(0.35rem, 1vh, 0.5rem);
+    color: #5ec3ff;
+    opacity: 0.85;
+    margin-bottom: clamp(0.2rem, 0.5vh, 0.3rem);
+    text-align: left;
+    flex-shrink: 0;
+    line-height: 1.2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
   }
   .back-row {
     gap: clamp(0.1rem, 1vw, 0.3rem);
