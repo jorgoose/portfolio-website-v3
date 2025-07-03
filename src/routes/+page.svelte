@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 
 let crtMode = false;
 let videoAutoplayFailed = false;
+let hasCheckedAutoplay = false;
 let radioExpanded = false;
 let audioContext: AudioContext;
 let analyser: AnalyserNode;
@@ -30,7 +31,19 @@ function toggleCrtMode() {
 
 function handleVideoLoad(event: Event) {
   const video = event.target as HTMLVideoElement;
-  if (video) {
+  if (video && !hasCheckedAutoplay) {
+    hasCheckedAutoplay = true;
+    
+    // Detect mobile Safari
+    const isMobileSafari = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    
+    // For mobile Safari, be more aggressive about detecting autoplay failure
+    if (isMobileSafari) {
+      // Assume autoplay will fail on mobile Safari and show notification
+      videoAutoplayFailed = true;
+      return;
+    }
+    
     // Check if video is actually playing
     const checkPlayback = () => {
       if (video.paused || video.ended) {
@@ -41,7 +54,7 @@ function handleVideoLoad(event: Event) {
     };
     
     // Check after a short delay to allow autoplay to start
-    setTimeout(checkPlayback, 1000);
+    setTimeout(checkPlayback, 1500);
     
     // Also listen for play/pause events
     video.addEventListener('play', () => {
@@ -52,6 +65,12 @@ function handleVideoLoad(event: Event) {
       if (video.currentTime === 0) {
         videoAutoplayFailed = true;
       }
+    });
+    
+    // Add error handling for video load failures
+    video.addEventListener('error', () => {
+      console.log('Video load error');
+      videoAutoplayFailed = true;
     });
   }
 }
@@ -357,7 +376,7 @@ onMount(() => {
   <div class="crt-background">
     <div class="tv-frame">
       <div class="crt-overlay"></div>
-      <video autoplay loop muted playsinline class="background-video" on:loadeddata={handleVideoLoad}>
+      <video autoplay loop muted playsinline preload="metadata" class="background-video" on:loadeddata={handleVideoLoad} on:error={() => {if (!hasCheckedAutoplay) {hasCheckedAutoplay = true; videoAutoplayFailed = true;}}}>
         <source src="/menu_background.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
@@ -401,7 +420,7 @@ onMount(() => {
   </div>
 {:else}
   <div class="halo-bg">
-    <video autoplay loop muted playsinline class="background-video" on:loadeddata={handleVideoLoad}>
+    <video autoplay loop muted playsinline preload="metadata" class="background-video" on:loadeddata={handleVideoLoad} on:error={() => videoAutoplayFailed = true}>
       <source src="/menu_background.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
