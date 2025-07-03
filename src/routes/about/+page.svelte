@@ -7,27 +7,50 @@
   const aboutSections = [
     {
       title: 'WHO I AM',
-      content: `I'm a passionate software developer with a love for creating immersive digital experiences. 
-My journey in technology began with a fascination for how code can bring ideas to life, 
-and it has evolved into a career focused on building robust, user-centered applications.`
+      content: `Hi, I'm Logan Jorgensen 👋 I'm a software engineer who loves building things, solving problems, and constantly improving. My interests are centered on software engineering, but extend beyond it—above all else, I personally value continuous learning and improvement.`
     },
     {
-      title: 'MY APPROACH',
-      content: `I believe in writing clean, maintainable code that not only solves problems but also 
-creates delightful user experiences. Every project is an opportunity to learn, innovate, 
-and push the boundaries of what's possible in web development.`
+      title: 'MY JOURNEY',
+      content: `My passion for software development started in high school with my first programming class. What hooked me was the ability to bring ideas to life—writing code and watching something functional appear on the screen. I view programming as a craft where technical skill meets creativity to shape something meaningful that can serve a purpose and scale globally.`
     },
     {
-      title: 'TECHNOLOGY',
-      content: `My expertise spans modern web technologies including React, Vue, Svelte, Node.js, 
-and cloud platforms. I'm constantly exploring new frameworks and tools to stay 
-at the forefront of web development.`
+      title: 'GROWTH MINDSET',
+      content: `I'm drawn to how this field rewards learning through failures. Every debugging session contains lessons that make us better engineers. This resonates with me from personal experiences—from a significant weight loss journey in high school to overcoming unexpected health challenges in early 2025 that temporarily affected my ability to code.`
+    },
+    {
+      title: 'FORMAL EDUCATION',
+      content: `📚 B.S. in Computer Science, Minor: Data Science
+🏫 Iowa State University
+🗓️ August 2021 - May 2024
+📍 Ames, IA
+📊 GPA: 3.65
+
+📚 Study Abroad - Focus: Technical Communication
+🏫 Nihon University
+🗓️ May 2023 - June 2023
+📍 Tokyo, Japan`
+    },
+    {
+      title: 'AWARDS',
+      content: `🏆 Anthropic "Build With Claude" Developer Contest Winner
+🥇 "Best Insurance Hack" HackUIowa
+🥇 "Best Game Development Hack" BlossomHack
+🥈 2nd Overall HackISU
+🥉 3rd Overall HackUTD Fidelity Challenge
+🥈 2nd Place Iowa State CS Department Hackathon
+🥉 3rd Place HCOB Future Finance Innovation Challenge
+🏅 Capital One 2024 TDP Hackathon Finalist`
+    },
+    {
+      title: 'CERTIFICATIONS',
+      content: `AWS Certified Solutions Architect (Associate) - Issued July 2024
+AWS Certified Developer (Associate) - Issued December 2024
+
+These certifications demonstrate my expertise in cloud architecture, serverless computing, and AWS services. I'm committed to staying current with cloud technologies and best practices in modern software development.`
     },
     {
       title: 'BEYOND CODE',
-      content: `When I'm not coding, you'll find me exploring new technologies, contributing to 
-open-source projects, or sharing knowledge with the developer community. 
-I believe in continuous learning and collaboration.`
+      content: `I earned my Computer Science degree at Iowa State University, where I held leadership roles in the Investment Group and was a CS Peer Mentor. In my free time, I work on side projects, volunteer through mentoring and hackathons, stay active through fitness challenges, and explore ideas at the intersection of software, business, and finance.`
     }
   ];
 
