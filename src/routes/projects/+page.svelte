@@ -640,6 +640,13 @@ body {
     border-width: 2vw;
     border-radius: 0.7rem;
     box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
   }
   .tv-frame::before {
     border-radius: 0.5rem;
@@ -682,12 +689,14 @@ body {
     border-radius: 1px;
   }
   .projects-header {
-    font-size: 1.1rem;
-    margin-top: 0.5rem;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    margin-top: clamp(0.2rem, 1vh, 0.5rem);
+    margin-bottom: clamp(0.1rem, 0.5vh, 0.3rem);
     padding-left: 4vw;
     padding-right: 4vw;
     width: 100%;
     box-sizing: border-box;
+    flex-shrink: 0;
   }
   .menu-bar,
   .level-select-row,
@@ -704,54 +713,59 @@ body {
     flex-direction: column;
     width: 100%;
     height: auto;
-    min-height: 320px;
-    flex: 1 1 auto;
-    padding: clamp(0.5rem, 2vh, 1rem) 0;
-    overflow: visible;
+    min-height: 0;
+    flex: 1;
+    padding: clamp(0.1rem, 0.3vh, 0.3rem) 0;
+    overflow: hidden;
     justify-content: flex-start;
     align-items: stretch;
+    position: relative;
   }
 
   .level-select-row {
     display: flex;
     flex-direction: row;
-    gap: clamp(0.5rem, 2vw, 1rem);
+    gap: clamp(0.4rem, 1.5vw, 0.8rem);
     width: 100%;
-    padding: 0 clamp(0.5rem, 2vw, 1rem);
-    height: auto;
-    min-height: 270px;
+    padding: clamp(0.15rem, 0.4vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    margin-top: 0;
+    margin: 0;
     align-items: stretch;
     justify-content: flex-start;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
+    flex: 1;
+    align-self: stretch;
+    contain: layout;
   }
 
   .level-card {
-    width: clamp(180px, 70vw, 280px);
-    min-width: 180px;
-    max-width: 280px;
-    height: auto;
-    min-height: 240px;
+    width: clamp(160px, 65vw, 260px);
+    min-width: 160px;
+    max-width: 260px;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     margin: 0;
     scroll-snap-align: start;
     flex: 0 0 auto;
-    font-size: clamp(0.4rem, 1.5vh, 0.8rem);
-    padding: clamp(0.2em, 1vh, 0.4em) clamp(0.3em, 1vh, 0.5em) clamp(0.3em, 1vh, 0.5em);
+    font-size: clamp(0.35rem, 1.2vh, 0.7rem);
+    padding: clamp(0.2rem, 0.6vh, 0.35rem) clamp(0.3rem, 0.8vh, 0.5rem) clamp(0.3rem, 0.8vh, 0.5rem);
     display: flex;
     flex-direction: column;
     align-items: stretch;
     overflow: hidden;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
     box-sizing: border-box;
     background: rgba(10, 20, 40, 0.95);
-    border: clamp(1px, 0.3vh, 3px) solid #1976d2;
-    border-radius: clamp(8px, 1.5vh, 18px);
-    box-shadow: 0 0 24px #1976d288, 0 0 2px #fff8;
+    border: clamp(1px, 0.2vh, 2px) solid #1976d2;
+    border-radius: clamp(6px, 1vh, 12px);
+    box-shadow: 0 0 16px #1976d288, 0 0 2px #fff8;
+    position: relative;
   }
   
   .level-card:first-child {
@@ -765,10 +779,10 @@ body {
   .level-img-wrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
-    border-radius: clamp(4px, 1vh, 10px);
+    border-radius: clamp(3px, 0.8vh, 8px);
     overflow: hidden;
-    margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
-    border: clamp(1px, 0.2vh, 2px) solid #5ec3ff44;
+    margin-bottom: clamp(0.3rem, 1vh, 0.8rem);
+    border: clamp(1px, 0.15vh, 1.5px) solid #5ec3ff44;
     background: #111;
     display: flex;
     align-items: center;
@@ -784,39 +798,41 @@ body {
   }
   .level-title {
     font-family: 'Xolonium', Arial, sans-serif;
-    font-size: clamp(0.6em, 2vh, 0.8em);
+    font-size: clamp(0.5em, 1.5vh, 0.7em);
     color: #5ec3ff;
     font-weight: bold;
-    margin-bottom: clamp(0.05em, 0.3vh, 0.1em);
+    margin-bottom: clamp(0.05em, 0.2vh, 0.1em);
     text-shadow: 0 0 8px #5ec3ff88;
-    flex: 1 1 auto;
+    flex-shrink: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .level-desc {
     font-family: 'Xolonium', Arial, sans-serif;
-    font-size: clamp(0.35rem, 1vh, 0.5rem);
+    font-size: clamp(0.3rem, 0.8vh, 0.45rem);
     color: #5ec3ff;
     opacity: 0.85;
-    margin-bottom: clamp(0.2rem, 0.5vh, 0.3rem);
+    margin-bottom: clamp(0.1rem, 0.3vh, 0.2rem);
     text-align: left;
-    flex-shrink: 0;
-    line-height: 1.2;
+    flex: 1;
+    min-height: 0;
+    line-height: 1.1;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
   }
   .back-row {
     gap: clamp(0.1rem, 1vw, 0.3rem);
-    margin-top: clamp(0.2rem, 1vh, 0.5rem);
+    margin-top: clamp(0.1rem, 0.5vh, 0.3rem);
     padding-right: clamp(1rem, 4vw, 2rem);
     width: 100%;
     box-sizing: border-box;
+    flex-shrink: 0;
   }
   .back-label, .select-label {
-    font-size: clamp(0.6rem, 2vh, 0.9rem);
+    font-size: clamp(0.5rem, 1.5vh, 0.8rem);
   }
   .select-label {
     display: none;
