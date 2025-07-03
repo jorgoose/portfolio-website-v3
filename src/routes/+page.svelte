@@ -72,6 +72,18 @@ function handleVideoLoad(event: Event) {
       console.log('Video load error');
       videoAutoplayFailed = true;
     });
+  } else if (video && hasCheckedAutoplay && !videoAutoplayFailed) {
+    // If we've already checked and autoplay is working, don't show notification
+    // Just ensure this new video element also gets the proper event listeners
+    video.addEventListener('play', () => {
+      videoAutoplayFailed = false;
+    });
+    
+    video.addEventListener('pause', () => {
+      if (video.currentTime === 0) {
+        videoAutoplayFailed = true;
+      }
+    });
   }
 }
 
@@ -81,6 +93,7 @@ function playVideo() {
   videos.forEach(video => {
     video.play().then(() => {
       videoAutoplayFailed = false;
+      hasCheckedAutoplay = true; // Mark that we've successfully handled autoplay
     }).catch(error => {
       console.log('Video play failed:', error);
     });
@@ -338,7 +351,7 @@ onMount(() => {
         <button class="notification-play" on:click={playVideo}>
           ▶️ Play Video
         </button>
-        <button class="notification-close" on:click={() => videoAutoplayFailed = false}>
+        <button class="notification-close" on:click={() => {videoAutoplayFailed = false; hasCheckedAutoplay = true;}}>
           Got it
         </button>
       </div>
