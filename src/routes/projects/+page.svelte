@@ -12,12 +12,12 @@
   let fadeOpacity = 1; // For smooth transitions
   let isTransitioning = false;
   const projects = [
-    { title: 'Hachiko', image: '/projects/hachiko-logo.jpg', description: 'Developer-friendly platform making Japanese financial data accessible through clean APIs. Transforms complex FSA disclosures into structured data. Built with SvelteKit, Rust, and Go.' },
-    { title: 'EveryNetNet', image: '/projects/everynetnet-logo.jpg', description: 'Investment research service for investors in net-net companies (trading below net current asset value). Helps investors and investment firms filter and access data about undervalued companies to make informed investment decisions. Built with Next.js, Go, Google Cloud Platform, and Stripe API.' },
+    { title: 'Hachiko', image: '/projects/hachiko-logo.jpg', description: 'Developer-friendly platform making Japanese financial data accessible through clean APIs and structured datasets. Transforms complex FSA disclosures into usable formats for developers. Streamlines access to market data. Built with SvelteKit, Rust, and Go.' },
+    { title: 'EveryNetNet', image: '/projects/everynetnet-logo.jpg', description: 'Investment research SaaS for finding net-net companies trading below net current asset value. Helps investors discover undervalued opportunities in the market through comprehensive screening tools and analysis. Built with Next.js, Go, Google Cloud Platform, and Stripe API.' },
     { title: 'Frogstagram', image: '/projects/frogstagrame.jpg', description: 'Instagram-inspired platform with a twist: only allows frog photos. Uses AWS services and computer vision to automatically filter uploads, ensuring only frog images make it to the feed. Built with Python, FastAPI, AWS, SvelteKit, Tailwind CSS, and Docker.' },
-    { title: 'Marketmon', image: '/projects/marketmon.png', description: 'Web-based trading card game that combines the excitement of battling monsters with real-time financial data from S&P 500 companies. Offers an engaging and educational experience in finance and investing. Built with Svelte, TypeScript, Tailwind CSS, Python, Claude API, and Stability API.' },
-    { title: 'Pokemon Image Classifier', image: '/projects/pkmn.jpeg', description: 'Training an image classification model to identify images of Pokémon. Built with TensorFlow, Keras, and Python.' },
-    { title: 'FinTeach', image: '/projects/finteach.jpg', description: 'FinTeach is an engaging educational app designed to make financial learning accessible and fun for young students. Built with Dart, Flutter, and OpenAI API.' }
+    { title: 'Marketmon', image: '/projects/marketmon.png', description: 'Web-based trading card game that combines monster battles with real-time S&P 500 financial data for educational gameplay. Players learn finance and investing through engaging card mechanics. Built with Svelte, TypeScript, Tailwind CSS, Python, Claude API, and Stability API.' },
+    { title: 'Pokemon Image Classifier', image: '/projects/pkmn.jpeg', description: 'Machine learning project that trains an image classification model to identify different Pokémon species from uploaded images. Uses deep learning and computer vision techniques for accurate recognition. Built with TensorFlow, Keras, and Python.' },
+    { title: 'FinTeach', image: '/projects/finteach.jpg', description: 'Engaging educational app designed to make financial learning accessible and fun for young students through interactive lessons and gamified experiences. Teaches essential money management skills and financial literacy concepts in an age-appropriate way. Built with Dart, Flutter, and OpenAI API.' }
   ];
   let start = 0;
   let visibleCount = 3;
@@ -977,6 +977,11 @@ body {
   text-align: left;
   flex: 1;
   min-height: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
 }
 .arrow {
   background: none;
