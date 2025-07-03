@@ -556,11 +556,15 @@ html, body {
   html, body {
     max-width: 100vw;
     overflow-x: hidden;
+    overflow-y: hidden;
+    height: 100vh;
   }
   
   .crt-background {
     background: url('/CRT_bg.jpeg') 47.5% 55.75% no-repeat;
     background-size: 255%;
+    height: 100vh;
+    overflow: hidden;
   }
   
   .tv-frame {
@@ -571,6 +575,8 @@ html, body {
     border-width: 2vw;
     border-radius: 0.7rem;
     box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
+    height: 100vh;
+    max-height: 100vh;
   }
   
   .tv-frame::before {
@@ -622,13 +628,17 @@ html, body {
   }
   
   .about-header {
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 4vw, 2rem);
     margin-left: 6vw;
+    margin-top: clamp(0.3rem, 2vh, 1rem);
+    margin-bottom: clamp(0.1rem, 1vh, 0.5rem);
   }
   
   .menu-bar {
-    padding: clamp(0.5rem, 2vh, 1rem);
+    padding: clamp(0.3rem, 1vh, 0.8rem);
     max-width: 100%;
+    flex: 1;
+    min-height: 0;
   }
   
   .about-section {
@@ -646,28 +656,48 @@ html, body {
   
   .back-row {
     gap: 0.5rem;
-    margin-top: 1rem;
+    margin-top: clamp(0.3rem, 1vh, 0.8rem);
     padding-right: 2%;
+    flex-shrink: 0;
   }
   
   .back-label {
-    font-size: 1.2rem;
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
   }
   
   .menu-item {
-    font-size: 0.9rem;
-    padding: 0.25rem 0.5rem;
+    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
+    padding: clamp(0.15rem, 0.5vh, 0.25rem) clamp(0.3rem, 1vw, 0.5rem);
+    margin: clamp(0.05rem, 0.2vh, 0.1rem) 0;
   }
   
   .menu-content,
   .section-text {
-    font-size: 0.85rem;
-    padding: 1rem 0 1rem 0;
+    font-size: clamp(0.5rem, 2vw, 0.85rem);
+    padding: clamp(0.5rem, 1.5vh, 1rem) 0;
+    line-height: 1.3;
   }
   
   .menu-vertical {
-    height: 50%;
+    height: auto;
+    flex: 1;
+    min-height: 0;
     padding-left: 0.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .menu-list {
+    flex-shrink: 0;
+    gap: clamp(0.1rem, 0.3vh, 0.18rem);
+  }
+  
+  .menu-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: clamp(0.5rem, 1vh, 1rem) 0 clamp(0.3rem, 1vh, 0.8rem) 0;
   }
   
   .about-icon-area {
@@ -682,6 +712,8 @@ html, body {
     left: 0;
     right: 0;
     box-sizing: border-box;
+    flex: 1;
+    min-height: 0;
   }
   
   .tv-frame .menu-vertical {
@@ -690,8 +722,10 @@ html, body {
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
-    max-height: 90vw;
-    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    margin-left: 0;
   }
   
   .tv-frame .menu-list,
@@ -702,22 +736,24 @@ html, body {
   }
   
   .tv-frame .menu-item {
-    font-size: 0.7rem;
-    padding: 0.12rem 0.2rem;
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
+    padding: clamp(0.08rem, 0.3vh, 0.12rem) clamp(0.15rem, 0.8vw, 0.2rem);
+    margin: clamp(0.02rem, 0.1vh, 0.05rem) 0;
   }
   
   .tv-frame .section-text {
-    font-size: 0.7rem;
-    padding: 0.5rem 0 0.5rem 0;
+    font-size: clamp(0.45rem, 1.8vw, 0.7rem);
+    padding: clamp(0.3rem, 0.8vh, 0.5rem) 0;
+    line-height: 1.2;
   }
   
   .about-bg .menu-item {
-    font-size: 0.8rem;
-    padding: 0.18rem 0.4rem;
+    font-size: clamp(0.6rem, 2.2vw, 0.8rem);
+    padding: clamp(0.12rem, 0.5vh, 0.18rem) clamp(0.25rem, 1vw, 0.4rem);
   }
   
   .about-bg .menu-list {
-    gap: 0.18rem;
+    gap: clamp(0.1rem, 0.3vh, 0.18rem);
   }
 }
 
@@ -755,6 +791,13 @@ html, body {
   padding: 0;
   min-height: 320px;
   justify-content: flex-start;
+}
+
+@media (max-width: 700px) {
+  .advanced-menu {
+    min-height: 0;
+    flex: 1;
+  }
 }
 .menu-vertical {
   display: flex;
