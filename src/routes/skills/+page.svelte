@@ -532,7 +532,8 @@ body {
   text-align: left;
   margin-top: clamp(0.5rem, 3vh, 2.5rem);
   margin-bottom: clamp(0.1rem, 1vh, 0.3rem);
-  padding-left: 4%;
+  margin-left: 20%;
+  padding-left: 0;
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -678,7 +679,8 @@ body {
   .projects-header {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    padding-left: 4%;
+    margin-left: 8vw;
+    padding-left: 0;
   }
 }
 @media (max-width: 700px) {
@@ -689,7 +691,8 @@ body {
   .projects-header {
     font-size: 2rem;
     margin-bottom: 0.15rem;
-    padding-left: 2%;
+    margin-left: 6vw;
+    padding-left: 0;
   }
   .arrow {
     display: none;

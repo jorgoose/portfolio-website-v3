@@ -633,15 +633,15 @@ body {
     background-size: 255%;
   }
   .tv-frame {
-    width: 100vw;
+    width: 98vw;
     max-width: 100vw;
     min-width: 0;
     aspect-ratio: 4 / 3;
-    border-width: 2vw;
-    border-radius: 0.7rem;
-    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
-    height: 100vh;
-    max-height: 100vh;
+    border-width: 6px;
+    border-radius: 1.2rem;
+    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 12px #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
+    height: auto;
+    max-height: 90vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -649,19 +649,20 @@ body {
     justify-content: flex-start;
   }
   .tv-frame::before {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   }
   .tv-frame::after {
-    border-radius: 0.4rem;
+    border-radius: 0.9rem;
   }
   .crt-overlay {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
   }
   .background-video {
+    border-radius: 1rem;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -836,6 +837,96 @@ body {
   }
   .select-label {
     display: none;
+  }
+  
+  /* Mobile CRT content styling */
+  .tv-frame .menu-bar {
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: clamp(0.1rem, 0.5vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
+    flex: 1;
+    min-height: 0;
+  }
+  
+  .tv-frame .level-select-row {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: clamp(0.15rem, 0.4vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
+    flex-shrink: 0;
+  }
+  
+  .tv-frame .projects-header {
+    padding-left: 4vw;
+    padding-right: 4vw;
+    margin-left: 0;
+    flex-shrink: 0;
+  }
+  
+  .tv-frame .back-row {
+    flex-shrink: 0;
+    padding-left: clamp(0.5rem, 2vw, 1rem);
+    padding-right: clamp(0.5rem, 2vw, 1rem);
+    margin-top: clamp(0.2rem, 0.5vh, 0.5rem);
+    margin-bottom: clamp(0.2rem, 0.5vh, 0.5rem);
+  }
+  
+  /* Enhanced vertical scrolling for the entire CRT content area */
+  .tv-frame {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .tv-frame > * {
+    flex-shrink: 0;
+  }
+  
+  .tv-frame .menu-bar {
+    flex: 1;
+    min-height: 0;
+  }
+  
+  /* Mobile-specific CRT scrollbar styling */
+  .tv-frame::-webkit-scrollbar,
+  .tv-frame .menu-bar::-webkit-scrollbar,
+  .tv-frame .level-select-row::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .tv-frame::-webkit-scrollbar-track,
+  .tv-frame .menu-bar::-webkit-scrollbar-track,
+  .tv-frame .level-select-row::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+  }
+
+  .tv-frame::-webkit-scrollbar-thumb,
+  .tv-frame .menu-bar::-webkit-scrollbar-thumb,
+  .tv-frame .level-select-row::-webkit-scrollbar-thumb {
+    background: #5ec3ff;
+    border-radius: 3px;
+    box-shadow: 0 0 4px #5ec3ff88;
+  }
+
+  .tv-frame::-webkit-scrollbar-thumb:hover,
+  .tv-frame .menu-bar::-webkit-scrollbar-thumb:hover,
+  .tv-frame .level-select-row::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+  }
+  
+  /* Smooth scrolling for mobile CRT */
+  .tv-frame {
+    scroll-behavior: smooth;
+  }
+  
+  .tv-frame .menu-bar {
+    scroll-behavior: smooth;
+  }
+  
+  .tv-frame .level-select-row {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 .projects-bg {
