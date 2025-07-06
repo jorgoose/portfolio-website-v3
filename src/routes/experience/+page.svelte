@@ -548,15 +548,15 @@ html, body {
   }
   
   .tv-frame {
-    width: 100vw;
+    width: 98vw;
     max-width: 100vw;
     min-width: 0;
     aspect-ratio: 4 / 3;
-    border-width: 2vw;
-    border-radius: 0.7rem;
-    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
-    height: 100vh;
-    max-height: 100vh;
+    border-width: 6px;
+    border-radius: 1.2rem;
+    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 12px #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
+    height: auto;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -564,15 +564,15 @@ html, body {
   }
   
   .tv-frame::before {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   }
   
   .tv-frame::after {
-    border-radius: 0.4rem;
+    border-radius: 0.9rem;
   }
   
   .crt-overlay {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     width: 100%;
     height: 100%;
     left: 0;
@@ -580,7 +580,7 @@ html, body {
   }
   
   .background-video {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -688,14 +688,16 @@ html, body {
   }
   
   .tv-frame .menu-vertical {
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
     flex: 1;
     min-height: 0;
-    overflow: hidden;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    overflow-x: hidden;
     margin-left: 0;
   }
   
@@ -725,6 +727,56 @@ html, body {
   
   .experience-bg .menu-list {
     gap: clamp(0.1rem, 0.3vh, 0.18rem);
+  }
+  
+  /* Mobile-specific CRT scrollbar styling */
+  .tv-frame .menu-vertical::-webkit-scrollbar,
+  .tv-frame .advanced-menu::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .tv-frame .menu-vertical::-webkit-scrollbar-track,
+  .tv-frame .advanced-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+  }
+
+  .tv-frame .menu-vertical::-webkit-scrollbar-thumb,
+  .tv-frame .advanced-menu::-webkit-scrollbar-thumb {
+    background: #5ec3ff;
+    border-radius: 3px;
+    box-shadow: 0 0 4px #5ec3ff88;
+  }
+
+  .tv-frame .menu-vertical::-webkit-scrollbar-thumb:hover,
+  .tv-frame .advanced-menu::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+  }
+
+  /* Mobile CRT content styling */
+  .tv-frame .menu-content {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .tv-frame .menu-list {
+    padding-right: 0.5rem;
+    overflow-x: hidden;
+  }
+
+  .tv-frame .experience-header {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-left: 0;
+  }
+
+  .tv-frame .advanced-menu {
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 }
 
@@ -778,6 +830,7 @@ html, body {
   width: 100%;
   max-width: 1000px;
   margin-left: 10%;
+  margin-right: 10%;
   padding: 0;
 }
 
@@ -893,5 +946,58 @@ body > :last-child {
 
 .tv-frame .menu-vertical {
   padding-left: 2rem;
+  padding-right: 2rem;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tv-frame .menu-content {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.tv-frame .menu-list {
+  padding-right: 0.5rem;
+  overflow-x: hidden;
+}
+
+.tv-frame .experience-header {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-left: 0;
+}
+
+.tv-frame .advanced-menu {
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling for CRT mode */
+.tv-frame .menu-vertical::-webkit-scrollbar,
+.tv-frame .advanced-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-track,
+.tv-frame .advanced-menu::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-thumb,
+.tv-frame .advanced-menu::-webkit-scrollbar-thumb {
+  background: #5ec3ff;
+  border-radius: 4px;
+  box-shadow: 0 0 4px #5ec3ff88;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-thumb:hover,
+.tv-frame .advanced-menu::-webkit-scrollbar-thumb:hover {
+  background: #fff;
 }
 </style> 

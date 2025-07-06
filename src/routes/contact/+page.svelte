@@ -795,6 +795,7 @@ html, body {
   width: 100%;
   max-width: 1000px;
   margin-left: 10%;
+  margin-right: 10%;
   padding: 0;
 }
 
@@ -910,6 +911,59 @@ body > :last-child {
 
 .tv-frame .menu-vertical {
   padding-left: 2rem;
+  padding-right: 2rem;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tv-frame .menu-content {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.tv-frame .menu-list {
+  padding-right: 0.5rem;
+  overflow-x: hidden;
+}
+
+.tv-frame .contact-header {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-left: 0;
+}
+
+.tv-frame .advanced-menu {
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling for CRT mode */
+.tv-frame .menu-vertical::-webkit-scrollbar,
+.tv-frame .advanced-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-track,
+.tv-frame .advanced-menu::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-thumb,
+.tv-frame .advanced-menu::-webkit-scrollbar-thumb {
+  background: #5ec3ff;
+  border-radius: 4px;
+  box-shadow: 0 0 4px #5ec3ff88;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-thumb:hover,
+.tv-frame .advanced-menu::-webkit-scrollbar-thumb:hover {
+  background: #fff;
 }
 
 .contact-display {

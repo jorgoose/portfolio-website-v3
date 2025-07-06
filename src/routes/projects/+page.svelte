@@ -1045,6 +1045,7 @@ body {
   .menu-bar {
     margin-top: 0;
     max-width: 100%;
+    justify-content: center;
   }
   .level-select-row {
     gap: 1.2rem;
