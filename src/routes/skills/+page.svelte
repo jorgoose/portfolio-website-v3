@@ -561,6 +561,33 @@ body {
   padding: 0 clamp(1rem, 3vw, 2rem);
   overflow: hidden;
 }
+
+@media (min-width: 701px) {
+  .menu-bar {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  /* Desktop non-CRT scrollbar styling */
+  .menu-bar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .menu-bar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+
+  .menu-bar::-webkit-scrollbar-thumb {
+    background: #5ec3ff;
+    border-radius: 4px;
+    box-shadow: 0 0 4px #5ec3ff88;
+  }
+
+  .menu-bar::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+  }
+}
 .level-select-row {
   display: flex;
   flex-direction: row;

@@ -812,8 +812,35 @@ html, body {
   border-bottom: clamp(1px, 0.3vh, 3px) solid #1976d2;
   border-radius: 0;
   padding: 0;
-  min-height: 320px;
   justify-content: flex-start;
+}
+
+@media (min-width: 701px) {
+  .advanced-menu {
+    min-height: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  /* Desktop non-CRT scrollbar styling */
+  .advanced-menu::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .advanced-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+
+  .advanced-menu::-webkit-scrollbar-thumb {
+    background: #5ec3ff;
+    border-radius: 4px;
+    box-shadow: 0 0 4px #5ec3ff88;
+  }
+
+  .advanced-menu::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+  }
 }
 
 @media (max-width: 700px) {
