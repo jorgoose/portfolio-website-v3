@@ -31,39 +31,56 @@ function toggleCrtMode() {
 
 function handleVideoLoad(event: Event) {
   const video = event.target as HTMLVideoElement;
+  
+  // Check if we've already determined autoplay status this session
+  if (typeof window !== 'undefined') {
+    const sessionAutoplayStatus = sessionStorage.getItem('autoplayStatus');
+    if (sessionAutoplayStatus === 'working') {
+      videoAutoplayFailed = false;
+      hasCheckedAutoplay = true;
+      return;
+    } else if (sessionAutoplayStatus === 'failed') {
+      videoAutoplayFailed = true;
+      hasCheckedAutoplay = true;
+      return;
+    }
+  }
+  
   if (video && !hasCheckedAutoplay) {
     hasCheckedAutoplay = true;
     
-    // Detect mobile Safari
-    const isMobileSafari = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    
-    // For mobile Safari, be more aggressive about detecting autoplay failure
-    if (isMobileSafari) {
-      // Assume autoplay will fail on mobile Safari and show notification
-      videoAutoplayFailed = true;
-      return;
-    }
-    
-    // Check if video is actually playing
+    // Check if video is actually playing after a short delay
     const checkPlayback = () => {
       if (video.paused || video.ended) {
         videoAutoplayFailed = true;
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('autoplayStatus', 'failed');
+        }
       } else {
         videoAutoplayFailed = false;
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('autoplayStatus', 'working');
+        }
       }
     };
     
     // Check after a short delay to allow autoplay to start
-    setTimeout(checkPlayback, 1500);
+    setTimeout(checkPlayback, 1000);
     
     // Also listen for play/pause events
     video.addEventListener('play', () => {
       videoAutoplayFailed = false;
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('autoplayStatus', 'working');
+      }
     });
-    
+
     video.addEventListener('pause', () => {
       if (video.currentTime === 0) {
         videoAutoplayFailed = true;
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('autoplayStatus', 'failed');
+        }
       }
     });
     
@@ -71,17 +88,8 @@ function handleVideoLoad(event: Event) {
     video.addEventListener('error', () => {
       console.log('Video load error');
       videoAutoplayFailed = true;
-    });
-  } else if (video && hasCheckedAutoplay && !videoAutoplayFailed) {
-    // If we've already checked and autoplay is working, don't show notification
-    // Just ensure this new video element also gets the proper event listeners
-    video.addEventListener('play', () => {
-      videoAutoplayFailed = false;
-    });
-    
-    video.addEventListener('pause', () => {
-      if (video.currentTime === 0) {
-        videoAutoplayFailed = true;
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('autoplayStatus', 'failed');
       }
     });
   }
