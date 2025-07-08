@@ -331,6 +331,10 @@ onMount(() => {
 });
 </script>
 
+<svelte:head>
+  <title>HaloPortfolio</title>
+</svelte:head>
+
 <div class="crt-toggle-bar">
   <button class="crt-toggle" on:click={toggleCrtMode}>
     CRT Mode: {crtMode ? 'On' : 'Off'}

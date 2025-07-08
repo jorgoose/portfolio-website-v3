@@ -91,7 +91,9 @@
   });
 </script>
 
-
+<svelte:head>
+  <title>Skills | HaloPortfolio</title>
+</svelte:head>
 
 {#if crtMode}
   <div class="crt-background">

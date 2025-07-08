@@ -140,6 +140,10 @@ Skills: Customer Service, Time Management, Problem Solving`
   });
 </script>
 
+<svelte:head>
+  <title>Experience | HaloPortfolio</title>
+</svelte:head>
+
 {#if crtMode}
   <div class="crt-background">
     <div class="tv-frame">

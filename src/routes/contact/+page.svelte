@@ -80,6 +80,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>Contact | HaloPortfolio</title>
+</svelte:head>
+
 {#if crtMode}
   <div class="crt-background">
     <div class="tv-frame">

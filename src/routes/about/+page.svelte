@@ -97,6 +97,10 @@ These certifications demonstrate my expertise in cloud architecture, serverless 
   });
 </script>
 
+<svelte:head>
+  <title>About | HaloPortfolio</title>
+</svelte:head>
+
 {#if crtMode}
   <div class="crt-background">
     <div class="tv-frame">

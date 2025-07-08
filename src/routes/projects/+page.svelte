@@ -364,7 +364,9 @@
   }
 </script>
 
-
+<svelte:head>
+  <title>Projects | HaloPortfolio</title>
+</svelte:head>
 
 {#if crtMode}
   <div class="crt-background">
