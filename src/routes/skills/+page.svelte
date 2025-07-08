@@ -104,29 +104,35 @@
         Your browser does not support the video tag.
       </video>
       <div class="projects-header">Skills</div>
-      <div class="menu-bar">
-        <div class="skills-container">
-          <div class="skills-list">
+      <div class="menu-bar advanced-menu">
+        <div class="menu-vertical">
+          <div class="menu-list">
             {#each skillCategories as cat, i}
-              <div class="skills-row {selectedCategory === i ? 'selected' : ''}"
+              <div class="menu-item {selectedCategory === i ? 'selected' : ''}"
                 tabindex="0"
                 on:click={() => selectCategory(i)}
                 aria-selected={selectedCategory === i}
               >
-                <span class="skills-category">{cat.title}</span>
-                <div class="skills-arrows">
-                  <button class="arrow-btn" on:click={(e) => { e.stopPropagation(); prevSkill(i); }} aria-label="Previous {cat.title} skill">
-                    <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="12,2 4,8 12,14" fill="#5ec3ff"/></svg>
-                  </button>
-                  <span class="skills-skill">{cat.skills[selectedSkillIdx[i]]}</span>
-                  <button class="arrow-btn" on:click={(e) => { e.stopPropagation(); nextSkill(i); }} aria-label="Next {cat.title} skill">
-                    <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="4,2 12,8 4,14" fill="#5ec3ff"/></svg>
-                  </button>
-                </div>
+                {cat.title}
               </div>
             {/each}
           </div>
-          <div class="skills-blurb"><span>{skillCategories[selectedCategory].blurbs[selectedSkillIdx[selectedCategory]]}</span></div>
+          <div class="menu-content">
+            <div class="skills-display">
+              <div class="skills-navigation">
+                <button class="arrow-btn" on:click={() => prevSkill(selectedCategory)} aria-label="Previous {skillCategories[selectedCategory].title} skill">
+                  <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="12,2 4,8 12,14" fill="#5ec3ff"/></svg>
+                </button>
+                <span class="current-skill">{skillCategories[selectedCategory].skills[selectedSkillIdx[selectedCategory]]}</span>
+                <button class="arrow-btn" on:click={() => nextSkill(selectedCategory)} aria-label="Next {skillCategories[selectedCategory].title} skill">
+                  <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="4,2 12,8 4,14" fill="#5ec3ff"/></svg>
+                </button>
+              </div>
+              <div class="skill-description">
+                {skillCategories[selectedCategory].blurbs[selectedSkillIdx[selectedCategory]]}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="back-row">
@@ -143,29 +149,35 @@
       Your browser does not support the video tag.
     </video>
     <div class="projects-header">Skills</div>
-    <div class="menu-bar">
-      <div class="skills-container">
-        <div class="skills-list">
+    <div class="menu-bar advanced-menu">
+      <div class="menu-vertical">
+        <div class="menu-list">
           {#each skillCategories as cat, i}
-            <div class="skills-row {selectedCategory === i ? 'selected' : ''}"
+            <div class="menu-item {selectedCategory === i ? 'selected' : ''}"
               tabindex="0"
               on:click={() => selectCategory(i)}
               aria-selected={selectedCategory === i}
             >
-              <span class="skills-category">{cat.title}</span>
-              <div class="skills-arrows">
-                <button class="arrow-btn" on:click={(e) => { e.stopPropagation(); prevSkill(i); }} aria-label="Previous {cat.title} skill">
-                  <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="12,2 4,8 12,14" fill="#5ec3ff"/></svg>
-                </button>
-                <span class="skills-skill">{cat.skills[selectedSkillIdx[i]]}</span>
-                <button class="arrow-btn" on:click={(e) => { e.stopPropagation(); nextSkill(i); }} aria-label="Next {cat.title} skill">
-                  <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="4,2 12,8 4,14" fill="#5ec3ff"/></svg>
-                </button>
-              </div>
+              {cat.title}
             </div>
           {/each}
         </div>
-        <div class="skills-blurb"><span>{skillCategories[selectedCategory].blurbs[selectedSkillIdx[selectedCategory]]}</span></div>
+        <div class="menu-content">
+          <div class="skills-display">
+            <div class="skills-navigation">
+              <button class="arrow-btn" on:click={() => prevSkill(selectedCategory)} aria-label="Previous {skillCategories[selectedCategory].title} skill">
+                <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="12,2 4,8 12,14" fill="#5ec3ff"/></svg>
+              </button>
+              <span class="current-skill">{skillCategories[selectedCategory].skills[selectedSkillIdx[selectedCategory]]}</span>
+              <button class="arrow-btn" on:click={() => nextSkill(selectedCategory)} aria-label="Next {skillCategories[selectedCategory].title} skill">
+                <svg class="arrow-triangle" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><polygon points="4,2 12,8 4,14" fill="#5ec3ff"/></svg>
+              </button>
+            </div>
+            <div class="skill-description">
+              {skillCategories[selectedCategory].blurbs[selectedSkillIdx[selectedCategory]]}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="back-row">
@@ -590,114 +602,7 @@ body {
     background: #fff;
   }
 }
-.level-select-row {
-  display: flex;
-  flex-direction: row;
-  gap: clamp(0.5rem, 2vw, 2rem);
-  justify-content: left;
-  align-items: stretch;
-  height: 100%;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  margin: 0;
-  padding: clamp(0.2rem, 0.5vw, 0.5rem) clamp(0.2rem, 0.5vw, 0.5rem);
-  padding-left: 2rem;
-}
-.level-card {
-  background: rgba(10, 20, 40, 0.95);
-  border: clamp(1px, 0.3vh, 3px) solid #1976d2;
-  border-radius: clamp(8px, 1.5vh, 18px);
-  box-shadow: 0 0 24px #1976d288, 0 0 2px #fff8;
-  width: calc(100% / 3);
-  min-width: 0;
-  max-width: none;
-  height: 100%;
-  max-height: none;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: clamp(0.3rem, 1vh, 0.7rem) clamp(0.5rem, 1.5vh, 1rem) clamp(0.5rem, 1.5vh, 1rem);
-  position: relative;
-  transition: box-shadow 0.2s, border-color 0.2s;
-  flex: 1 1 0;
-  margin: 0;
-  overflow: hidden;
-}
-.level-card:hover {
-  border-color: #5ec3ff;
-  box-shadow: 0 0 32px #5ec3ffcc, 0 0 8px #fff8;
-}
-.level-img-wrapper {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: clamp(4px, 1vh, 10px);
-  overflow: hidden;
-  margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
-  border: clamp(1px, 0.2vh, 2px) solid #5ec3ff44;
-  background: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 1;
-  min-height: 0;
-}
-.level-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.level-title {
-  font-family: 'Xolonium', Arial, sans-serif;
-  font-size: clamp(0.8rem, 2.5vh, 1.5rem);
-  color: #5ec3ff;
-  font-weight: bold;
-  margin-bottom: clamp(0.3rem, 1vh, 0.7rem);
-  text-shadow: 0 0 8px #5ec3ff88;
-  flex-shrink: 1;
-  min-height: 0;
-}
-.level-desc {
-  font-family: 'Xolonium', Arial, sans-serif;
-  font-size: clamp(0.6rem, 1.8vh, 1.05rem);
-  color: #5ec3ff;
-  opacity: 0.85;
-  margin-bottom: clamp(0.5rem, 1.5vh, 1.2rem);
-  text-align: left;
-  flex-shrink: 1;
-  min-height: 0;
-}
-.arrow {
-  background: none;
-  border: none;
-  padding: 0 clamp(0.1rem, 0.2vw, 0.2rem);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-  transition: filter 0.2s;
-  height: 100%;
-  flex-shrink: 0;
-}
-.arrow:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-.arrow-svg {
-  display: block;
-  height: clamp(120px, 25vh, 320px);
-  max-height: 90vh;
-  width: auto;
-  filter: drop-shadow(0 0 8px #5ec3ff88);
-  transition: filter 0.2s;
-}
-.arrow:hover:not(:disabled) .arrow-svg {
-  filter: drop-shadow(0 0 16px #5ec3ffcc);
-}
+
 @media (max-width: 1000px) {
   .tv-frame {
     width: 98vw;
@@ -735,56 +640,90 @@ body {
     max-width: 100%;
     justify-content: center;
   }
-  .level-select-row {
-    gap: 1.2rem;
-    padding: 0 0.5rem;
-    overflow-x: auto;
+
+  .menu-vertical {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 0;
   }
-  .level-card {
-    min-width: clamp(200px, 28%, 280px);
-    max-width: 28%;
-    width: clamp(200px, 80%, 280px);
-    height: auto;
-    margin: 0;
-    margin-bottom: 0;
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
+
+  .menu-item {
+    font-size: 1rem;
+    padding: 0.35rem 1rem;
+    margin: 0.05rem 0;
+    border-radius: 1rem;
   }
-  .level-title {
-    font-size: clamp(0.5rem, 2vh, 0.7rem);
+
+  .menu-content {
+    padding: 1rem 0 1rem 0;
+    font-size: 0.9rem;
   }
-  /* Make skill items smaller in CRT mode on mobile */
-  .tv-frame .skills-row {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.5rem;
+
+  .skills-navigation {
+    padding: 0.8rem 1rem;
+    gap: 1rem;
   }
-  .tv-frame .skills-category {
-    font-size: 0.8em;
+
+  .current-skill {
+    font-size: 1.1rem;
+    min-width: 100px;
   }
-  .tv-frame .skills-skill {
-    min-width: 40px;
-    font-size: 0.8em;
+
+  .arrow-btn {
+    padding: 0.2rem;
   }
-  .tv-frame .arrow-btn {
-    font-size: 0.8em;
-    padding: 0.05em 0.2em;
-    border-radius: 0.3em;
+
+  .skill-description {
+    font-size: 1rem;
+    padding: 1rem 1.2rem;
+    line-height: 1.5;
   }
-  .tv-frame .skills-blurb {
+
+  /* CRT mode mobile styles */
+  .tv-frame .menu-vertical {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 0;
+  }
+
+  .tv-frame .menu-item {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+    margin: 0.05rem 0;
+    border-radius: 0.8rem;
+  }
+
+  .tv-frame .menu-content {
+    padding: 0.8rem 0 0.8rem 0;
+    font-size: 0.8rem;
+  }
+
+  .tv-frame .skills-navigation {
+    padding: 0.6rem 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .tv-frame .current-skill {
+    font-size: 0.9rem;
+    min-width: 80px;
+  }
+
+  .tv-frame .skill-description {
     font-size: 0.8rem;
     padding: 0.8rem 1rem;
-    margin-top: 1rem;
+    line-height: 1.4;
+  }
+
+  .tv-frame .arrow-btn {
+    padding: 0.15rem;
+  }
+
+  .tv-frame .arrow-triangle {
+    width: 1em;
+    height: 1em;
   }
 }
-.level-card.selected {
-  border-color: #5ec3ff;
-  box-shadow: 0 0 32px #5ec3ff, 0 0 8px #5ec3ffcc;
-  outline: 2px solid #5ec3ff;
-  outline-offset: 2px;
-}
+
 .back-row {
   display: flex;
   flex-direction: row;
@@ -876,59 +815,134 @@ body {
 .arrow.right {
   margin-right: clamp(1rem, 6vw, 3rem);
 }
-.skills-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-  align-items: stretch;
-  justify-content: center;
-  padding: 2.2rem 0.5rem 2.2rem 0.5rem;
-  box-sizing: border-box;
-}
-.skills-row {
+.advanced-menu {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  background: rgba(10, 20, 40, 0.85);
+  box-shadow: 0 0 32px #1976d288, 0 0 2px #fff8;
+  border-top: clamp(1px, 0.3vh, 3px) solid #1976d2;
+  border-bottom: clamp(1px, 0.3vh, 3px) solid #1976d2;
+  border-radius: 0;
+  padding: 0;
+  min-height: 320px;
+  justify-content: flex-start;
+}
+
+.menu-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
+  max-width: 1000px;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding: 0;
+}
+
+.menu-list {  
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin-top: 0.7rem;
+  gap: 0.3rem;
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+
+.menu-item {
+  font-family: 'Xolonium', Arial, sans-serif;
+  font-size: 1.35rem;
+  color: #5ec3ff;
+  background: rgba(20, 30, 50, 0.7);
+  border: 2.5px solid #1976d2;
+  border-radius: 1.5rem;
+  padding: 0.45rem 1.2rem;
+  margin: 0.1rem 0;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  user-select: none;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.menu-item.selected, .menu-item:focus {
+  background: #0a223a;
+  color: #fff;
+  border: 2.5px solid #5ec3ff;
+  box-shadow: 0 0 8px #5ec3ff88;
+}
+
+.menu-item:active {
+  background: #1976d2;
+  color: #fff;
+}
+
+.menu-content {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 2rem 0 2rem 0;
+  min-height: 120px;
+  color: #5ec3ff;
+  font-family: 'Xolonium', Arial, sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  margin-top: 0;
+  white-space: pre-line;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+}
+
+.skills-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.skills-navigation {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
   background: rgba(20, 30, 50, 0.7);
   border-radius: 1.2rem;
   border: 2px solid #1976d2;
   box-shadow: 0 0 8px #1976d288;
-  padding: 0.7rem 1.5rem;
-  font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 1.2rem;
-  color: #5ec3ff;
-  margin: 0 auto;
-  box-sizing: border-box;
 }
-.skills-category {
+
+.current-skill {
+  font-size: 1.3rem;
   font-weight: bold;
-  letter-spacing: 0.08em;
-  color: #5ec3ff;
-  text-shadow: 0 0 6px #5ec3ff44;
-  font-size: 1.1em;
-}
-.skills-arrows {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-.skills-skill {
-  min-width: 90px;
-  text-align: center;
-  font-size: 1.1em;
   color: #fff;
   text-shadow: 0 0 8px #5ec3ff88;
+  min-width: 120px;
+  text-align: center;
 }
+
 .arrow-btn {
   background: none;
   border: none;
   color: #5ec3ff;
   cursor: pointer;
-  padding: 0.1em 0.3em;
-  border-radius: 0.7em;
+  padding: 0.3rem;
+  border-radius: 0.7rem;
   transition: background 0.2s, color 0.2s;
   outline: none;
   box-shadow: none;
@@ -936,85 +950,101 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .arrow-btn:hover .arrow-triangle, .arrow-btn:focus .arrow-triangle {
   filter: drop-shadow(0 0 4px #5ec3ffcc);
   fill: #fff;
 }
+
 .arrow-triangle {
   display: block;
   width: 1.2em;
   height: 1.2em;
   transition: fill 0.2s, filter 0.2s;
 }
-@media (max-width: 700px) {
-  .skills-list {
-    gap: 0.5rem;
-    padding: 1rem 0.2rem 1rem 0.2rem;
-  }
-  .skills-row {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.7rem;
-    border-radius: 0.7rem;
-  }
-  .skills-category {
-    font-size: 1em;
-  }
-  .skills-skill {
-    min-width: 60px;
-    font-size: 1em;
-  }
-  .arrow-btn {
-    font-size: 1em;
-    padding: 0.1em 0.4em;
-    border-radius: 0.5em;
-  }
-}
-.skills-blurb {
-  margin-top: 2.2rem;
-  color: #5ec3ff;
+
+.skill-description {
   font-family: 'Xolonium', Arial, sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  color: #5ec3ff;
+  opacity: 0.9;
+  line-height: 1.6;
   text-align: left;
-  width: 100%;
-  max-width: 700px;
-  min-height: 2.5em;
+  padding: 1.5rem 1.8rem;
   background: rgba(10, 20, 40, 0.7);
   border-radius: 1.2rem;
   box-shadow: 0 0 8px #1976d288;
-  padding: 1.2rem 1.5rem;
-  box-sizing: border-box;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-bottom: 0;
-}
-.skills-list {
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.skills-row.selected {
-  border: 2.5px solid #5ec3ff;
-  background: #0a223a;
-  color: #fff;
-  box-shadow: 0 0 12px #5ec3ffcc;
-}
-.skills-row.selected .skills-category {
-  color: #fff;
-  text-shadow: 0 0 8px #5ec3ffcc;
-}
-.skills-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   width: 100%;
-  justify-content: space-between;
-  height: 100%;
-  padding-bottom: 1rem;
+  box-sizing: border-box;
 }
-@media (max-width: 700px) {
-  .skills-blurb {
-    display: none;
-  }
+
+/* CRT mode containment for Skills page */
+.tv-frame .menu-bar,
+.tv-frame .advanced-menu,
+.tv-frame .menu-vertical {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tv-frame .menu-vertical {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tv-frame .menu-content {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.tv-frame .menu-list {
+  padding-right: 0.5rem;
+  overflow-x: hidden;
+}
+
+.tv-frame .projects-header {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-left: 0;
+}
+
+.tv-frame .advanced-menu {
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling for CRT mode */
+.tv-frame .menu-vertical::-webkit-scrollbar,
+.tv-frame .advanced-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-track,
+.tv-frame .advanced-menu::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-thumb,
+.tv-frame .advanced-menu::-webkit-scrollbar-thumb {
+  background: #5ec3ff;
+  border-radius: 4px;
+  box-shadow: 0 0 4px #5ec3ff88;
+}
+
+.tv-frame .menu-vertical::-webkit-scrollbar-thumb:hover,
+.tv-frame .advanced-menu::-webkit-scrollbar-thumb:hover {
+  background: #fff;
 }
 </style>
 
