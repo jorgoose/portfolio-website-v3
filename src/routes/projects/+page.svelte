@@ -720,7 +720,7 @@ body {
     flex: 1;
     padding: clamp(0.1rem, 0.3vh, 0.3rem) 0;
     overflow: hidden;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: stretch;
     position: relative;
   }
@@ -731,9 +731,10 @@ body {
     gap: clamp(0.4rem, 1.5vw, 0.8rem);
     width: 100%;
     padding: clamp(0.15rem, 0.4vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
-    height: 100%;
+    padding-left: clamp(1rem, 3vw, 1.5rem);
+    height: auto;
     min-height: 0;
-    max-height: 100%;
+    max-height: none;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -742,8 +743,8 @@ body {
     justify-content: flex-start;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
-    flex: 1;
-    align-self: stretch;
+    flex: 0 0 auto;
+    align-self: center;
     contain: layout;
   }
 
