@@ -614,25 +614,29 @@ html, body {
   }
   
   .tv-frame {
-    width: 100vw;
+    width: 98vw;
     max-width: 100vw;
     min-width: 0;
-    aspect-ratio: 4 / 3;
-    border-width: 2vw;
-    border-radius: 0.7rem;
-    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 2vw #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
+    height: auto;
+    max-height: 85vh;
+    border-width: 6px;
+    border-radius: 1.2rem;
+    box-shadow: 0 0 24px 2px #00bfff33, 0 0 0 6px #222b, 0 4px 16px #000c, 0 0 0 1px #222 inset;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
   
   .tv-frame::before {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   }
   
   .tv-frame::after {
-    border-radius: 0.4rem;
+    border-radius: 0.9rem;
   }
   
   .crt-overlay {
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     width: 100%;
     height: 100%;
     left: 0;
@@ -671,8 +675,11 @@ html, body {
   }
   
   .contact-header {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
     margin-left: 6vw;
+    flex-shrink: 0;
   }
   
   .menu-bar {
@@ -686,8 +693,12 @@ html, body {
   
   .back-row {
     gap: 0.5rem;
-    margin-top: 1rem;
-    padding-right: 2%;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    padding-right: 6vw;
+    padding-left: 6vw;
+    flex-shrink: 0;
+    position: relative;
   }
   
   .back-label {
@@ -697,12 +708,48 @@ html, body {
   .menu-item {
     font-size: 0.9rem;
     padding: 0.25rem 0.5rem;
+    display: block;
+    visibility: visible;
+    pointer-events: auto;
   }
   
   .menu-content,
   .section-text {
     font-size: 0.85rem;
     padding: 1rem 0 1rem 0;
+    display: block;
+    visibility: visible;
+  }
+
+  .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    visibility: visible;
+  }
+
+  .contact-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    visibility: visible;
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    visibility: visible;
+  }
+
+  .social-icon {
+    visibility: visible;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .menu-vertical {
@@ -719,19 +766,32 @@ html, body {
     width: 100%;
     max-width: 100%;
     margin: 0;
+    padding: 0 !important;
     left: 0;
     right: 0;
     box-sizing: border-box;
+    flex: 1;
+    height: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
   }
   
   .tv-frame .menu-vertical {
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
-    max-height: 90vw;
+    height: 0 !important;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
   }
   
   .tv-frame .menu-list,
@@ -742,13 +802,108 @@ html, body {
   }
   
   .tv-frame .menu-item {
-    font-size: 0.7rem;
-    padding: 0.12rem 0.2rem;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+    margin: 0.05rem 0;
+    flex-shrink: 0;
+    display: block;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  .tv-frame .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    flex-shrink: 0;
+  }
+  
+  .tv-frame .menu-content {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0.3rem 0 1rem 0;
   }
   
   .tv-frame .section-text {
     font-size: 0.7rem;
-    padding: 0.5rem 0 0.5rem 0;
+    padding: 0.3rem 0;
+    flex: 1;
+    min-height: 0;
+  }
+  
+  .tv-frame .contact-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    visibility: visible;
+  }
+  
+  .tv-frame .social-icons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  .tv-frame .social-icon {
+    visibility: visible;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tv-frame .contact-header {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-left: 0;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  
+  .tv-frame .back-row {
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* Custom scrollbar styling for mobile CRT mode */
+  .tv-frame .menu-vertical::-webkit-scrollbar,
+  .tv-frame .advanced-menu::-webkit-scrollbar,
+  .tv-frame .menu-bar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .tv-frame .menu-vertical::-webkit-scrollbar-track,
+  .tv-frame .advanced-menu::-webkit-scrollbar-track,
+  .tv-frame .menu-bar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+  }
+
+  .tv-frame .menu-vertical::-webkit-scrollbar-thumb,
+  .tv-frame .advanced-menu::-webkit-scrollbar-thumb,
+  .tv-frame .menu-bar::-webkit-scrollbar-thumb {
+    background: #5ec3ff;
+    border-radius: 2px;
+    box-shadow: 0 0 3px #5ec3ff88;
+  }
+
+  .tv-frame .menu-vertical::-webkit-scrollbar-thumb:hover,
+  .tv-frame .advanced-menu::-webkit-scrollbar-thumb:hover,
+  .tv-frame .menu-bar::-webkit-scrollbar-thumb:hover {
+    background: #fff;
   }
   
   .contact-bg .menu-item {
