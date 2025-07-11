@@ -45,7 +45,7 @@ function handleVideoLoad(event: Event) {
       return;
     }
   }
-  
+  // Check if video is actually playing after a short delay
   if (video && !hasCheckedAutoplay) {
     hasCheckedAutoplay = true;
     
@@ -74,7 +74,7 @@ function handleVideoLoad(event: Event) {
         sessionStorage.setItem('autoplayStatus', 'working');
       }
     });
-
+    
     video.addEventListener('pause', () => {
       if (video.currentTime === 0) {
         videoAutoplayFailed = true;
