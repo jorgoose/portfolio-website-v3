@@ -716,10 +716,10 @@ body {
     flex-direction: column;
     width: 100%;
     height: auto;
-    min-height: 0;
+    min-height: 60vh;
     flex: 1;
-    padding: clamp(0.1rem, 0.3vh, 0.3rem) 0;
-    overflow: hidden;
+    padding: clamp(0.5rem, 1vh, 1rem) 0;
+    overflow: visible;
     justify-content: center;
     align-items: stretch;
     position: relative;
@@ -728,46 +728,45 @@ body {
   .level-select-row {
     display: flex;
     flex-direction: row;
-    gap: clamp(0.4rem, 1.5vw, 0.8rem);
+    gap: clamp(0.8rem, 2vw, 1.2rem);
     width: 100%;
-    padding: clamp(0.15rem, 0.4vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
+    padding: clamp(0.5rem, 1vh, 1rem) clamp(0.5rem, 2vw, 1rem);
     padding-left: clamp(1rem, 3vw, 1.5rem);
     height: auto;
-    min-height: 0;
+    min-height: 50vh;
     max-height: none;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible;
     scroll-snap-type: x mandatory;
     margin: 0;
     align-items: stretch;
     justify-content: flex-start;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
-    flex: 0 0 auto;
+    flex: 1;
     align-self: center;
-    contain: layout;
   }
 
   .level-card {
-    width: clamp(160px, 65vw, 260px);
-    min-width: 160px;
-    max-width: 260px;
-    height: 100%;
-    min-height: 0;
-    max-height: 100%;
+    width: clamp(200px, 75vw, 300px);
+    min-width: 200px;
+    max-width: 300px;
+    height: auto;
+    min-height: clamp(300px, 45vh, 400px);
+    max-height: none;
     margin: 0;
     scroll-snap-align: start;
     flex: 0 0 auto;
-    font-size: clamp(0.35rem, 1.2vh, 0.7rem);
-    padding: clamp(0.2rem, 0.6vh, 0.35rem) clamp(0.3rem, 0.8vh, 0.5rem) clamp(0.3rem, 0.8vh, 0.5rem);
+    font-size: clamp(0.6rem, 1.8vh, 1rem);
+    padding: clamp(0.8rem, 2vh, 1.2rem);
     display: flex;
     flex-direction: column;
     align-items: stretch;
     overflow: hidden;
     box-sizing: border-box;
     background: rgba(10, 20, 40, 0.95);
-    border: clamp(1px, 0.2vh, 2px) solid #1976d2;
-    border-radius: clamp(6px, 1vh, 12px);
+    border: clamp(1px, 0.3vh, 2px) solid #1976d2;
+    border-radius: clamp(8px, 1.5vh, 12px);
     box-shadow: 0 0 16px #1976d288, 0 0 2px #fff8;
     position: relative;
   }
@@ -783,16 +782,16 @@ body {
   .level-img-wrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
-    border-radius: clamp(3px, 0.8vh, 8px);
+    border-radius: clamp(6px, 1.5vh, 12px);
     overflow: hidden;
-    margin-bottom: clamp(0.3rem, 1vh, 0.8rem);
-    border: clamp(1px, 0.15vh, 1.5px) solid #5ec3ff44;
+    margin-bottom: clamp(0.8rem, 2vh, 1.2rem);
+    border: clamp(1px, 0.3vh, 2px) solid #5ec3ff44;
     background: #111;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 1;
-    min-height: 0;
+    flex-shrink: 0;
+    min-height: clamp(100px, 20vh, 150px);
   }
   .level-img {
     width: 100%;
@@ -802,29 +801,30 @@ body {
   }
   .level-title {
     font-family: 'Xolonium', Arial, sans-serif;
-    font-size: clamp(0.5em, 1.5vh, 0.7em);
+    font-size: clamp(0.8rem, 2.5vh, 1.2rem);
     color: #5ec3ff;
     font-weight: bold;
-    margin-bottom: clamp(0.05em, 0.2vh, 0.1em);
+    margin-bottom: clamp(0.5rem, 1vh, 0.8rem);
     text-shadow: 0 0 8px #5ec3ff88;
     flex-shrink: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: none;
+    line-height: 1.2;
   }
   .level-desc {
     font-family: 'Xolonium', Arial, sans-serif;
-    font-size: clamp(0.3rem, 0.8vh, 0.45rem);
+    font-size: clamp(0.6rem, 1.5vh, 0.8rem);
     color: #5ec3ff;
     opacity: 0.85;
-    margin-bottom: clamp(0.1rem, 0.3vh, 0.2rem);
+    margin-bottom: clamp(0.5rem, 1vh, 0.8rem);
     text-align: left;
     flex: 1;
     min-height: 0;
-    line-height: 1.1;
+    line-height: 1.3;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
   }
   .back-row {
@@ -847,16 +847,17 @@ body {
     max-height: calc(100vh - 8rem);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: clamp(0.1rem, 0.5vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
+    padding: clamp(0.5rem, 1vh, 1rem) clamp(0.5rem, 2vw, 1rem);
     flex: 1;
-    min-height: 0;
+    min-height: 50vh;
   }
   
   .tv-frame .level-select-row {
     overflow-x: auto;
-    overflow-y: hidden;
-    padding: clamp(0.15rem, 0.4vh, 0.3rem) clamp(0.5rem, 2vw, 1rem);
-    flex-shrink: 0;
+    overflow-y: visible;
+    padding: clamp(0.5rem, 1vh, 1rem) clamp(0.5rem, 2vw, 1rem);
+    flex: 1;
+    min-height: 40vh;
   }
   
   .tv-frame .projects-header {
